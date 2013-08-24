@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Quiltify for Google Images",
+    "name": "Quiltify",
     "description": "Quiltify allows you to make \"quilts\", or matrices of images out of Google image search results.",
     "version": "1.0",
     "content_scripts": [{
