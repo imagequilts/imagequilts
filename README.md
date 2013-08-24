@@ -1,4 +1,4 @@
-# Google Image Quilts
+# Quiltify
 
 This is a Google Chrome Extension which allows you to create "quilts" from Google image search results.
 
