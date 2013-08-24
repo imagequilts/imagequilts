@@ -10,7 +10,7 @@
         $('#hdtb_msb').prepend(
             $('<div class="hdtb_mitem"></div>')
                 .append(
-                    $('<a class="q qs" href="javascript:;">Quiltify</a>')
+                    $('<a class="q qs" href="javascript:;" style="border-radius: 16px; color: #fff; background: #70C2B5; padding: 0px 7px; margin: auto; line-height: 25px;">Quiltify</a>')
                         .click(function(){
                             makeQuilt();
                         })
@@ -27,6 +27,7 @@
         $('body').append('<style>' +
             'body { visibility: hidden; background: #eee !important }' +
             'body > img { height: 200px !important; width: auto !important; float: left !important; }' +
+
         +'</style>');
 
         $('body').append(images);
