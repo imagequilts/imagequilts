@@ -1,0 +1,13 @@
+{
+    "manifest_version": 2,
+    "name": "Quilt Maker for Google Images",
+    "description": "Designed by Edward Tufte and Adam Schwartz, Quilt Maker allows you to make \"quilts\", or matrices of images (see https://twitter.com/EdwardTufte/status/314851425349955585), to ",
+    "version": "1.0",
+    "content_scripts": [{
+        "js": ["contentscript.js"],
+        "matches": ["*://www.google.com/search*"]
+    }],
+    "web_accessible_resources": [
+        "script.js"
+    ]
+}
