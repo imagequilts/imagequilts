@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Quiltify",
-    "description": "Quiltify allows you to make \"quilts\", or matrices of images, out of Google image search results.",
-    "version": "1.1",
+    "name": "Quilt Maker",
+    "description": "Quilt Maker allows you to make \"quilts\", or matrices of images, out of Google image search results.",
+    "version": "1.2",
     "content_scripts": [{
         "js": ["contentscript.js"],
         "matches": ["*://www.google.com/search*"]
