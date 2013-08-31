@@ -4,37 +4,49 @@
 // App code
 
 (function(){
+
     var $ = jQuery;
 
     var addQuiltifyLink = function() {
-        $('#hdtb_msb').prepend(
-            $('<div class="hdtb_mitem"></div>')
-                .append(
-                    $('<a class="q qs" href="javascript:;" style="border-radius: 16px; color: #fff; background: #70C2B5; padding: 0px 7px; margin: auto; line-height: 25px;">Quiltify</a>')
-                        .click(function(){
-                            makeQuilt();
-                        })
-                )
+        $('#gbqfbw').after(
+            $('<div class="gbqfb quiltify-link" style="background: #777; border-color: #666">Make Quilt</div>')
+                .click(function(){
+                    makeQuilt();
+                })
         );
     };
 
     var makeQuilt = function() {
         // Grab all images
-        var images = $('img.rg_i').clone();
+        var $images = $('img.rg_i').clone(),
+            $quilt = $('<div class="quilt"></div>')
+        ;
 
-        $('body').empty();
+        $('body').empty().css('cssText', '').css('visibility', 'hidden');
 
         $('body').append('<style>' +
-            'body { visibility: hidden; background: #eee !important }' +
-            'body > img { height: 200px !important; width: auto !important; float: left !important; }' +
+            'body { background: #fff; margin: 0; }' +
+            '.quilt { margin: 20px; overflow: hidden }' +
+            '.image { height: 200px !important; float: left !important; position: relative; }' +
+            '.close { display: block; cursor: pointer; position: absolute; top: 0; right: 0; color: #fff; background: rgba(0, 0, 0, 0.5); opacity: 0; -webkit-transition: opacity 0.5s; font-size: 20px; font-family: "Helvetica Neue", sans-serif; padding: 0 5px 3px }' +
+            '.close:active { color: red !important; background: rgba(0, 0, 0, 0.8); }' +
+            '.image:hover .close { opacity: 1 }' +
+            'img { height: 200px !important; width: auto !important }' +
+        '</style>');
 
-        +'</style>');
+        $('body').append($quilt)
+        $quilt.append($images)
 
-        $('body').append(images);
-
-        $('body').find('img').each(function(){
-            $(this).css('cssText', '');
+        $quilt.find('img').each(function(){
+            $(this).css('cssText', '').wrap('<div class="image"></div>');
         });
+
+        $quilt.find('.image').append(
+            $('<a class="close" title="Remove image from quilt">&times;</a>')
+                .click(function(){
+                    $(this).parent().remove();
+                })
+        );
 
         $('body').css('visibility', 'visible');
     };
