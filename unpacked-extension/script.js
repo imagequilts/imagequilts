@@ -5,52 +5,104 @@
 
 (function(){
 
-    var $ = jQuery;
+    // Hack to prevent Google errors
+    window.a = window.b = window.c = { nodeType: function(){} };
 
-    var addQuiltifyLink = function() {
+    var $ = jQuery, app = {};
+
+    app.addQuiltifyLink = function() {
         $('#gbqfbw').after(
-            $('<div class="gbqfb quiltify-link" style="background: #777; border-color: #666">Make Quilt</div>')
+            $('<div class="gbqfb quiltify-link" style="background: #777; border-color: #666">Make ImageQuilt</div>')
                 .click(function(){
-                    makeQuilt();
+                    app.makeQuilt();
                 })
         );
     };
 
-    var makeQuilt = function() {
+    app.makeQuilt = function() {
         // Grab all images
-        var $images = $('img.rg_i').clone(),
-            $quilt = $('<div class="quilt"></div>')
+        var $body = $('body'),
+            $head = $('head'),
+            $images = $('img.rg_i').clone(),
+            $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
+            $quilt = $('<div class="quilt"></div>'),
+            $tools = $('<div class="tools"></div>')
         ;
 
-        $('body').empty().css('cssText', '').css('visibility', 'hidden');
+        $head.find('*:not("link.chrome-image-quilts")').remove();
 
-        $('body').append('<style>' +
-            'body { background: #fff; margin: 0; }' +
-            '.quilt { margin: 20px; overflow: hidden }' +
-            '.image { height: 200px !important; float: left !important; position: relative; }' +
-            '.close { display: block; cursor: pointer; position: absolute; top: 0; right: 0; color: #fff; background: rgba(0, 0, 0, 0.5); opacity: 0; -webkit-transition: opacity 0.5s; font-size: 20px; font-family: "Helvetica Neue", sans-serif; padding: 0 5px 3px }' +
-            '.close:active { color: red !important; background: rgba(0, 0, 0, 0.8); }' +
-            '.image:hover .close { opacity: 1 }' +
-            'img { height: 200px !important; width: auto !important }' +
-        '</style>');
+        $body[0].className = '';
+        $body.empty().attr('id', '').css('cssText', '').css('visibility', 'hidden').addClass('chrome-image-quilts');
+        $body.append('<div style="-webkit-transform: translateZ(0)"></div>');
 
-        $('body').append($quilt)
-        $quilt.append($images)
+        $body.append($tools);
+
+        $tools
+            .append(
+                $('<span class="logo">ImageQuilts</span>')
+            )
+            .append(
+                $('<span>Zoom</span>')
+                    .click(function(){
+                        $quilt.find('.image').each(function(){
+                            $(this).attr('data-zoom', 1);
+                        });
+                    })
+            )
+            .append(
+                $('<a>In</a>')
+                    .click(function(){
+                        $quilt.find('.image').each(function(){
+                            $(this).attr('data-zoom', 1);
+                        });
+                    })
+            )
+            .append(
+                $('<a>Out</a>')
+                    .click(function(){
+                        $quilt.find('.image').each(function(){
+                            $(this).attr('data-zoom', 0);
+                        });
+                    })
+            )
+            .append(
+                $('<a>Reverse</a>')
+                    .click(function(){
+                        $quilt.find('.image').each(function(){
+                            var $image = $(this);
+                            $image.attr('data-zoom', parseInt($image.attr('data-zoom'), 10) === 1 ? 0 : 1);
+                        });
+                    })
+            )
+        ;
+
+        $body.append($quiltWrapper);
+        $quiltWrapper.append($quilt);
+        $quilt.append($images);
 
         $quilt.find('img').each(function(){
-            $(this).css('cssText', '').wrap('<div class="image"></div>');
+            $(this).css('cssText', '').wrap('<div class="image" data-zoom="1"></div>');
         });
 
-        $quilt.find('.image').append(
-            $('<a class="close" title="Remove image from quilt">&times;</a>')
-                .click(function(){
-                    $(this).parent().remove();
-                })
-        );
+        $quilt.find('.image')
+            .append(
+                $('<a class="close" title="Remove image from quilt">&times;</a>')
+                    .click(function(){
+                        $(this).parent().remove();
+                    })
+            )
+            .append(
+                $('<a class="zoom" title="Change image zoom and cropping"></a>')
+                    .click(function(){
+                        var $image = $(this).parent();
+                        $image.attr('data-zoom', parseInt($image.attr('data-zoom'), 10) === 1 ? 0 : 1);
+                    })
+            )
+        ;
 
-        $('body').css('visibility', 'visible');
+        $body.css('visibility', 'visible');
     };
 
-    addQuiltifyLink();
+    app.addQuiltifyLink();
 
 })();
