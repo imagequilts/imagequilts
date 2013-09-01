@@ -99,8 +99,20 @@
     margin-bottom: -200px
 }
 
-.chrome-image-quilts .quilt[data-mode="grey"] .image img {
-    -webkit-filter: grayscale(1);
+.chrome-image-quilts .quilt[data-grayscale="0"][data-invert="0"] .image img {
+    -webkit-filter: grayscale(0) invert(0);
+}
+
+.chrome-image-quilts .quilt[data-grayscale="0"][data-invert="1"] .image img {
+    -webkit-filter: grayscale(0) invert(1);
+}
+
+.chrome-image-quilts .quilt[data-grayscale="1"][data-invert="0"] .image img {
+    -webkit-filter: grayscale(1) invert(0);
+}
+
+.chrome-image-quilts .quilt[data-grayscale="1"][data-invert="1"] .image img {
+    -webkit-filter: grayscale(1) invert(1);
 }
 
 .chrome-image-quilts .image {

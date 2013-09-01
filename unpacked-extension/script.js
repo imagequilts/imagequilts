@@ -22,7 +22,7 @@
             $head = $('head'),
             $images = $('img.rg_i').clone(),
             $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
-            $quilt = $('<div class="quilt"></div>'),
+            $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0"></div>'),
             $tools = $('<div class="tools"></div>')
         ;
 
@@ -86,8 +86,9 @@
 
             // Mode
             .append('<span>Color</span>')
-            .append($('<a>Full</a>').click(function(){ $quilt.attr('data-mode', 'full'); }))
-            .append($('<a>Grey</a>').click(function(){ $quilt.attr('data-mode', 'grey'); }))
+            .append($('<a>Full</a>').click(function(){ $quilt.attr('data-grayscale', '0'); }))
+            .append($('<a>Grey</a>').click(function(){ $quilt.attr('data-grayscale', '1'); }))
+            .append($('<a>Invert</a>').click(function(){ $quilt.attr('data-invert', parseInt($quilt.attr('data-invert'), 10) === 1 ? 0 : 1); }))
         ;
 
         $body.append($quiltWrapper);
