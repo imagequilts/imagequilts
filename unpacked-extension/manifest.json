@@ -1,15 +1,17 @@
 {
     "manifest_version": 2,
-    "name": "Quilt Maker",
-    "description": "Quilt Maker allows you to make \"quilts\", or matrices of images, out of Google image search results.",
-    "version": "1.2",
+    "name": "ImageQuilts",
+    "description": "ImageQuilts allows you to make \"quilts\", or matrices of images, out of Google image search results.",
+    "version": "2.0",
     "content_scripts": [{
         "js": ["contentscript.js"],
         "matches": ["*://www.google.com/search*"]
     }],
     "web_accessible_resources": [
-        "script.js"
+        "script.js",
         "style.css",
+        "fonts/lato-lig-webfont.ttf",
+        "fonts/lato-reg-webfont.ttf"
     ],
     "icons": {
         "16": "icons/icon16.png",
