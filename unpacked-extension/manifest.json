@@ -9,6 +9,7 @@
     }],
     "web_accessible_resources": [
         "script.js"
+        "style.css",
     ],
     "icons": {
         "16": "icons/icon16.png",

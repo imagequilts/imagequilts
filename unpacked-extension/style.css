@@ -1,0 +1,174 @@
+@font-face {
+    font-family: 'latolight';
+    src: url('fonts/lato-lig-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latoregular';
+    src: url('fonts/lato-reg-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.chrome-image-quilts, .chrome-image-quilts * {
+    -webkit-user-select: none !important;
+}
+
+.chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts *:before, .chrome-image-quilts *:after {
+    box-sizing: border-box;
+}
+
+.chrome-image-quilts {
+    background: #000;
+    margin: 0;
+    font-family: 'latoregular', "Helvetica Neue", sans-serif;
+    color: #ccc
+}
+
+.chrome-image-quilts a {
+    cursor: pointer;
+    text-align: center;
+    display: inline-block
+}
+
+.chrome-image-quilts .tools {
+    background: rgba(0, 0, 0, .7);
+    padding: 8px 10px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+    height: 52px;
+    overflow: hidden;
+}
+
+.chrome-image-quilts .tools span {
+    height: 36px;
+    font-size: 13px;
+    line-height: 36px;
+    color: #6f6f6f;
+    padding: 0px 15px;
+    text-transform: uppercase;
+}
+
+.chrome-image-quilts .tools span.logo {
+    color: rgb(224, 211, 139);
+    margin-right: 40px;
+}
+
+.chrome-image-quilts .tools a {
+    height: 36px;
+    font-size: 13px;
+    line-height: 36px;
+    color: #ccc;
+    padding: 0px 15px;
+    text-transform: uppercase;
+    font-weight: 100;
+}
+
+.chrome-image-quilts .tools a:hover {
+    color: #fff;
+    border-color: #fff
+}
+
+.chrome-image-quilts .tools a:active {
+    background: #fff;
+    color: #000
+}
+
+.chrome-image-quilts .quilt-wrapper {
+    margin: 0px;
+    overflow: hidden;
+    font-size: 0;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 52px;
+}
+
+.chrome-image-quilts .quilt {
+    margin: 0px;
+    overflow: hidden;
+    font-size: 0;
+    width: 120%;
+    min-width: 1400px;
+    margin-bottom: -200px
+}
+
+.chrome-image-quilts .image {
+    height: 200px;
+    display: inline-block;
+    position: relative;
+    overflow: hidden
+}
+
+.chrome-image-quilts .image .close {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .8);
+    opacity: 0;
+    -webkit-transition: opacity .5s;
+    font-size: 27px;
+    padding: 5px 10px 4px;
+    line-height: 27px;
+    font-family: 'latolight';
+    text-transform: uppercase;
+}
+
+.chrome-image-quilts .image .close:active {
+    color: #fff;
+    background: rgba(0, 0, 0, 1)
+}
+
+.chrome-image-quilts .image:hover .close {
+    opacity: 1
+}
+
+.chrome-image-quilts .image img {
+    height: 200px !important;
+    width: auto !important;
+    -webkit-transition: all .5s
+}
+
+.chrome-image-quilts .image .zoom {
+    position: absolute;
+    margin: auto;
+    width: 110px;
+    max-width: 100%;
+    font-size: 13px;
+    height: 36px;
+    line-height: 37px;
+    background: rgba(0, 0, 0, .8);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    -webkit-transition: opacity .5s;
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+.chrome-image-quilts .image .zoom:active {
+    color: #fff;
+    background: rgba(0, 0, 0, .8)
+}
+
+.chrome-image-quilts .image:hover .zoom {
+    opacity: 1
+}
+
+.chrome-image-quilts .image[data-zoom="0"] .zoom:before {
+    content:"Zoom In"
+}
+
+.chrome-image-quilts .image[data-zoom="1"] .zoom:before {
+    content:"Zoom Out"
+}
+
+.chrome-image-quilts .image[data-zoom="1"] img {
+    -webkit-transform: scale(2)
+}
