@@ -22,7 +22,7 @@
             $head = $('head'),
             $images = $('img.rg_i').clone(),
             $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
-            $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0"></div>'),
+            $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0" data-zoom="1.00"></div>'),
             $tools = $('<div class="tools"></div>')
         ;
 
@@ -41,26 +41,26 @@
             )
 
             // Zoom
-            .append('<span>Zoom</span>')
-            .append($('<a>In</a>').click(function(){
-                $quilt.find('.image').each(function(){
-                    $(this).attr('data-zoom', 1);
-                });
-            }))
-            .append($('<a>Out</a>').click(function(){
-                $quilt.find('.image').each(function(){
-                    $(this).attr('data-zoom', 0);
-                });
-            }))
-            .append($('<a>Reverse</a>').click(function(){
-                $quilt.find('.image').each(function(){
-                    var $image = $(this);
-                    $image.attr('data-zoom', parseInt($image.attr('data-zoom'), 10) === 1 ? 0 : 1);
-                });
-            }))
+            .append('<span class="label">Zoom&nbsp;(Percent)</span>')
+            .append($('<a>100</a>').click(function(){ $quilt.find('.image').each(function(){ $(this).attr('data-zoom', 0); }); }))
+            .append($('<a>110</a>').click(function(){ $quilt.find('.image').each(function(){ $(this).attr('data-zoom', 1); }); }))
+            .append($('<a>125</a>').click(function(){ $quilt.find('.image').each(function(){ $(this).attr('data-zoom', 2); }); }))
+            .append($('<a>150</a>').click(function(){ $quilt.find('.image').each(function(){ $(this).attr('data-zoom', 3); }); }))
+            .append($('<a>200</a>').click(function(){ $quilt.find('.image').each(function(){ $(this).attr('data-zoom', 4); }); }))
+            .append($('<a>300</a>').click(function(){ $quilt.find('.image').each(function(){ $(this).attr('data-zoom', 5); }); }))
+
+            // Scale
+            .append('<span class="label">Size&nbsp;(Percent)</span>')
+            .append($('<a>50</a>').click(function(){ $quilt.attr('data-zoom', '0.50'); }))
+            .append($('<a>67</a>').click(function(){ $quilt.attr('data-zoom', '0.67'); }))
+            .append($('<a>75</a>').click(function(){ $quilt.attr('data-zoom', '0.75'); }))
+            .append($('<a>90</a>').click(function(){ $quilt.attr('data-zoom', '0.90'); }))
+            .append($('<a>100</a>').click(function(){ $quilt.attr('data-zoom', '1.00'); }))
+            .append($('<a>110</a>').click(function(){ $quilt.attr('data-zoom', '1.10'); }))
+            .append($('<a>125</a>').click(function(){ $quilt.attr('data-zoom', '1.25'); }))
 
             // Order
-            .append('<span>Order</span>')
+            .append('<span class="label">Order</span>')
             .append($('<a>Original</a>').click(function(){
                 $images = $quilt.find('.image').toArray();
                 $images.sort(function(a, b){
@@ -72,7 +72,7 @@
                 });
                 $quilt.html($images);
             }))
-            .append($('<a>Random</a>').click(function(){
+            .append($('<a>Shuffle</a>').click(function(){
                 $images = $quilt.find('.image').toArray();
                 $images.sort(function(a, b){
                     var a = Math.random(),
@@ -85,10 +85,10 @@
             }))
 
             // Mode
-            .append('<span>Color</span>')
-            .append($('<a>Full</a>').click(function(){ $quilt.attr('data-grayscale', '0'); }))
-            .append($('<a>Grey</a>').click(function(){ $quilt.attr('data-grayscale', '1'); }))
-            .append($('<a>Invert</a>').click(function(){ $quilt.attr('data-invert', parseInt($quilt.attr('data-invert'), 10) === 1 ? 0 : 1); }))
+            .append('<span class="label">Mode</span>')
+            .append($('<a>Color</a>').click(function(){ $quilt.attr('data-grayscale', 0); }))
+            .append($('<a>Greyscale</a>').click(function(){ $quilt.attr('data-grayscale', 1); }))
+            .append($('<a>Inverted</a>').click(function(){ $quilt.attr('data-invert', parseInt($quilt.attr('data-invert'), 10) === 1 ? 0 : 1); }))
         ;
 
         $body.append($quiltWrapper);
@@ -96,7 +96,7 @@
         $quilt.append($images);
 
         $quilt.find('img').each(function(i){
-            $(this).css('cssText', '').wrap('<div class="image" data-zoom="1" data-original-order="' + i + '"></div>');
+            $(this).css('cssText', '').wrap('<div class="image" data-zoom="4" data-original-order="' + i + '"></div>');
         });
 
         $quilt.find('.image')
@@ -111,7 +111,7 @@
 
         $quilt.on('click', '.zoom', function(e){
             var $image = $(this).parent();
-            $image.attr('data-zoom', parseInt($image.attr('data-zoom'), 10) === 1 ? 0 : 1);
+            $image.attr('data-zoom', (parseInt($image.attr('data-zoom'), 10) + 1) % 6);
         });
 
         $body.css('visibility', 'visible');

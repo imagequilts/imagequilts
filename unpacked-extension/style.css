@@ -57,41 +57,55 @@
     top: 0;
     width: 100%;
     z-index: 9;
-    height: 52px;
+    height: 49px;
     overflow: hidden;
 }
 
-.chrome-image-quilts .tools span, .chrome-image-quilts .tools a{
+.chrome-image-quilts .tools span, .chrome-image-quilts .tools a {
     height: 36px;
     font-size: 13px;
-    line-height: 36px;
-    padding: 0px 15px;
+    line-height: 42px;
+    padding: 0px 10px;
     text-transform: uppercase;
 }
 
 .chrome-image-quilts .tools span {
     color: #6f6f6f;
     margin-left: 20px;
+    cursor: default;
+}
+
+.chrome-image-quilts .tools span.label {
+    width: 0;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    font-size: 10px;
+    position: relative;
+    top: -16px;
+    left: 20px;
+    width: 10px;
+}
+
+.chrome-image-quilts .tools span.logo {
+    color: rgb(224, 211, 139);
+    margin: 0 20px;
+    padding: 0 5px 0 0;
+    font-size: 17px;
+    position: relative;
+    top: -4px;
 }
 
 .chrome-image-quilts .tools a {
     color: #ccc;
 }
 
-.chrome-image-quilts .tools span.logo {
-    color: rgb(224, 211, 139);
-    margin: 0;
-    cursor: default;
-}
-
 .chrome-image-quilts .tools a:hover {
-    color: #fff;
-    border-color: #fff
+    color: #fff
 }
 
 .chrome-image-quilts .tools a:active {
-    background: #fff;
-    color: #000
+    text-shadow: 0 0 15px #fff
 }
 
 .chrome-image-quilts .quilt-wrapper {
@@ -100,7 +114,7 @@
     font-size: 0;
     width: 100%;
     overflow: hidden;
-    margin-top: 52px;
+    margin-top: 49px;
 }
 
 .chrome-image-quilts .quilt {
@@ -108,8 +122,7 @@
     overflow: hidden;
     font-size: 0;
     width: 120%;
-    min-width: 1400px;
-    margin-bottom: -200px
+    min-width: 1400px
 }
 
 .chrome-image-quilts .quilt[data-grayscale="0"][data-invert="0"] .image img {
@@ -129,7 +142,6 @@
 }
 
 .chrome-image-quilts .image {
-    height: 200px;
     display: inline-block;
     position: relative;
     overflow: hidden
@@ -160,7 +172,6 @@
 }
 
 .chrome-image-quilts .image img {
-    height: 200px;
     width: auto;
     -webkit-transition: -webkit-transform .5s, -webkit-filter .5s;
 }
@@ -193,70 +204,52 @@
     opacity: 1
 }
 
-.chrome-image-quilts .image[data-zoom="0"] .zoom:before {
-    content:"Zoom In"
-}
+.chrome-image-quilts .image[data-zoom="0"] .zoom:before { content: "Zoom 110%" }
+.chrome-image-quilts .image[data-zoom="1"] .zoom:before { content: "Zoom 125%" }
+.chrome-image-quilts .image[data-zoom="2"] .zoom:before { content: "Zoom 150%" }
+.chrome-image-quilts .image[data-zoom="3"] .zoom:before { content: "Zoom 200%" }
+.chrome-image-quilts .image[data-zoom="4"] .zoom:before { content: "Zoom 300%" }
+.chrome-image-quilts .image[data-zoom="5"] .zoom:before { content: "Zoom 100%" }
 
-.chrome-image-quilts .image[data-zoom="1"] .zoom:before {
-    content:"Zoom Out"
-}
+.chrome-image-quilts .image[data-zoom="0"] img { -webkit-transform: scale(1) }
+.chrome-image-quilts .image[data-zoom="1"] img { -webkit-transform: scale(1.1) }
+.chrome-image-quilts .image[data-zoom="2"] img { -webkit-transform: scale(1.25) }
+.chrome-image-quilts .image[data-zoom="3"] img { -webkit-transform: scale(1.5) }
+.chrome-image-quilts .image[data-zoom="4"] img { -webkit-transform: scale(2) }
+.chrome-image-quilts .image[data-zoom="5"] img { -webkit-transform: scale(3) }
 
-.chrome-image-quilts .image[data-zoom="1"] img {
-    -webkit-transform: scale(2)
-}
+.chrome-image-quilts .quilt[data-zoom="0.50"] .image, .chrome-image-quilts .quilt[data-zoom="0.50"] .image img { height: 100px; }
+.chrome-image-quilts .quilt[data-zoom="0.67"] .image, .chrome-image-quilts .quilt[data-zoom="0.67"] .image img { height: 133px; }
+.chrome-image-quilts .quilt[data-zoom="0.75"] .image, .chrome-image-quilts .quilt[data-zoom="0.75"] .image img { height: 150px; }
+.chrome-image-quilts .quilt[data-zoom="0.90"] .image, .chrome-image-quilts .quilt[data-zoom="0.90"] .image img { height: 180px; }
+.chrome-image-quilts .quilt[data-zoom="1.00"] .image, .chrome-image-quilts .quilt[data-zoom="1.00"] .image img { height: 200px; }
+.chrome-image-quilts .quilt[data-zoom="1.10"] .image, .chrome-image-quilts .quilt[data-zoom="1.10"] .image img { height: 220px; }
+.chrome-image-quilts .quilt[data-zoom="1.25"] .image, .chrome-image-quilts .quilt[data-zoom="1.25"] .image img { height: 250px; }
 
-@media (max-width: 1400px)  {
-    .chrome-image-quilts .tools span, .chrome-image-quilts .tools a {
-        padding: 0px 12px;
-    }
-
-    .chrome-image-quilts .image, .chrome-image-quilts .image img {
-        height: 180px;
-    }
-}
+.chrome-image-quilts .quilt[data-zoom="0.50"] { margin-bottom: -100px; }
+.chrome-image-quilts .quilt[data-zoom="0.67"] { margin-bottom: -133px; }
+.chrome-image-quilts .quilt[data-zoom="0.75"] { margin-bottom: -150px; }
+.chrome-image-quilts .quilt[data-zoom="0.90"] { margin-bottom: -180px; }
+.chrome-image-quilts .quilt[data-zoom="1.00"] { margin-bottom: -200px; }
+.chrome-image-quilts .quilt[data-zoom="1.10"] { margin-bottom: -220px; }
+.chrome-image-quilts .quilt[data-zoom="1.25"] { margin-bottom: -250px; }
 
 @media (max-width: 1200px) {
-    .chrome-image-quilts .tools {
-        padding-top: 3px;
-        padding-bottom: 3px;
-        height: 32px;
-    }
-
     .chrome-image-quilts .tools span, .chrome-image-quilts .tools a {
-        height: 26px;
-        line-height: 26px;
-        font-size: 11px;
-        padding: 0px 9px;
+        padding: 0px 6px;
     }
 
-    .chrome-image-quilts .quilt-wrapper {
-        margin-top: 32px;
-    }
-
-    .chrome-image-quilts .image .zoom {
-        height: 26px;
-        line-height: 26px;
-        font-size: 11px;
-        width: 85px;
-    }
-
-    .chrome-image-quilts .image .close {
-        font-size: 21px;
-        padding: 1px 6px;
-        line-height: 23px;
-    }
-
-    .chrome-image-quilts .image, .chrome-image-quilts .image img {
-        height: 160px;
+    .chrome-image-quilts .tools span.label {
+        left: 16px;
     }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1050px) {
     .chrome-image-quilts .tools span, .chrome-image-quilts .tools a {
-        padding: 0px 7px;
+        padding: 0px 4px;
     }
 
-    .chrome-image-quilts .image, .chrome-image-quilts .image img {
-        height: 140px;
+    .chrome-image-quilts .tools span.label {
+        left: 14px;
     }
 }
