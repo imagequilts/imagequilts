@@ -12,6 +12,19 @@
     font-style: normal;
 }
 
+.gbqfb.quiltify-link {
+    font-family: "latoregular" !important;
+    text-transform: uppercase !important;
+    color: #e0d38b !important;
+    font-size: 11px !important;
+    padding: 0 13px !important;
+    cursor: pointer !important;
+    height: 29px !important;
+    background: #000 !important;
+    border: 1px #000 !important;
+    line-height: 31px !important;
+}
+
 .chrome-image-quilts, .chrome-image-quilts * {
     -webkit-user-select: none !important;
 }
