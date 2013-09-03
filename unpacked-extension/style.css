@@ -12,7 +12,19 @@
     font-style: normal;
 }
 
+#gbw #gbq {
+    position: absolute !important;
+    z-index: 9999999999 !important;
+}
+
+#gbw #gbu {
+    position: absolute !important;
+    z-index: 99999999 !important
+}
+
 .gbqfb.quiltify-link {
+    position: relative;
+    z-index: 99999999999 !important;
     font-family: "latoregular" !important;
     text-transform: uppercase !important;
     color: #e0d38b !important;
