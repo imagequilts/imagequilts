@@ -1,13 +1,13 @@
 @font-face {
     font-family: 'latolight';
-    src: url('fonts/lato-lig-webfont.ttf') format('truetype');
+    src: url('../fonts/lato-lig-webfont.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'latoregular';
-    src: url('fonts/lato-reg-webfont.ttf') format('truetype');
+    src: url('../fonts/lato-reg-webfont.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
