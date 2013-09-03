@@ -4,12 +4,12 @@
     "description": "ImageQuilts allows you to make \"quilts\", or matrices of images, out of Google image search results.",
     "version": "2.3",
     "content_scripts": [{
-        "js": ["contentscript.js"],
+        "js": ["js/contentscript.js"],
         "matches": ["*://www.google.com/search*"]
     }],
     "web_accessible_resources": [
-        "script.js",
-        "style.css",
+        "js/script.js",
+        "css/style.css",
         "fonts/lato-lig-webfont.ttf",
         "fonts/lato-reg-webfont.ttf"
     ],
