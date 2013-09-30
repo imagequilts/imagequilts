@@ -29,12 +29,20 @@
     text-transform: uppercase !important;
     color: #e0d38b !important;
     font-size: 11px !important;
-    padding: 0 13px !important;
+    padding: 0 !important;
     cursor: pointer !important;
     height: 29px !important;
     background: #000 !important;
     border: 1px #000 !important;
     line-height: 31px !important;
+    width: 144px !important;
+    min-width: 144px !important;
+    max-width: 144px !important;
+    -webkit-box-sizing: content-box !important;
+}
+
+#gbqfbw + .gbqfb.quiltify-link {
+    margin-left: 10px;
 }
 
 .chrome-image-quilts, .chrome-image-quilts * {
