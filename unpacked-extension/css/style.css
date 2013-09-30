@@ -41,8 +41,8 @@
     -webkit-box-sizing: content-box !important;
 }
 
-#gbqfbw + .gbqfb.quiltify-link {
-    margin-left: 10px;
+#gbqfbw {
+    margin-right: 15px !important;
 }
 
 .chrome-image-quilts, .chrome-image-quilts * {
