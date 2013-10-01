@@ -22,7 +22,7 @@
             $head = $('head'),
             $images = $('img.rg_i').clone(),
             $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
-            $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0" data-zoom="1.00"></div>'),
+            $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0" data-zoom="0.75"></div>'),
             $tools = $('<div class="tools"></div>')
         ;
 
@@ -96,7 +96,7 @@
         $quilt.append($images);
 
         $quilt.find('img').each(function(i){
-            $(this).css('cssText', '').wrap('<div class="image" data-zoom="4" data-original-order="' + i + '"></div>');
+            $(this).css('cssText', '').wrap('<div class="image" data-zoom="1" data-original-order="' + i + '"></div>');
         });
 
         $quilt.find('.image')
