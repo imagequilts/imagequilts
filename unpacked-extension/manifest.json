@@ -26,9 +26,7 @@
         "128": "icons/icon128.png"
     },
     "browser_action": {
-        "default_icon": {
-            "38": "icons/icon48.png"
-        },
+        "default_icon": "icons/icon48.png",
         "default_title": "ImageQuilts"
     }
 }
