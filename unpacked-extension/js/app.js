@@ -74,12 +74,15 @@
                 });
                 $quilt.html($images);
             }))
-
             // Mode
             .append('<span class="label">Mode</span>')
             .append($('<a>Color</a>').click(function(){ $quilt.attr('data-grayscale', 0); }))
             .append($('<a>Greyscale</a>').click(function(){ $quilt.attr('data-grayscale', 1); }))
             .append($('<a>Inverted</a>').click(function(){ $quilt.attr('data-invert', parseInt($quilt.attr('data-invert'), 10) === 1 ? 0 : 1); }))
+
+            // Export
+            .append($('<a class="right">Export</a>').click(saveExport))
+
         ;
 
         $body.append($quiltWrapper);
@@ -111,5 +114,17 @@
     chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
         app.makeQuilt(request.urls);
     });
+
+    function saveExport(){
+      document.body.classList.add('capturing');
+
+      // Force repaint
+      document.body.clientHeight;
+
+      chrome.runtime.sendMessage({type: 'screenshot'});
+      setTimeout(function(){
+        document.body.classList.remove('capturing');
+      });
+    }
 
 })();

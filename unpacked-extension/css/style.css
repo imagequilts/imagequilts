@@ -95,6 +95,14 @@
     text-shadow: 0 0 15px #fff
 }
 
+.chrome-image-quilts .tools a.right {
+    float: right;
+}
+
+body.capturing.chrome-image-quilts .tools {
+    display: none;
+}
+
 .chrome-image-quilts .quilt-wrapper {
     margin: 0px;
     overflow: hidden;
