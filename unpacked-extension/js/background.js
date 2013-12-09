@@ -18,7 +18,7 @@ function fetchImageUrls(cb){
 
   if (active)
     return;
-    
+
   active = true;
 
   chrome.windows.getCurrent(function (currentWindow) {
@@ -43,7 +43,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
 chrome.browserAction.onClicked.addListener(function(){
   imageUrls = null;
-  fetchImageUrls(showQuilt); 
+  fetchImageUrls(showQuilt);
 });
 
 function showQuilt(urls){
