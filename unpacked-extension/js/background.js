@@ -1,5 +1,16 @@
 chrome.browserAction.setBadgeBackgroundColor({'color': '#000'});
 
+chrome.contextMenus.create({
+  type: 'normal',
+  title: 'Add to Image Quilt',
+  contexts: ['image'],
+  onclick: handleContextClick
+});
+
+function handleContextClick(info){
+  showQuilt([info.srcUrl]);
+}
+
 var active = false;
 var imageUrls = null;
 function fetchImageUrls(cb){

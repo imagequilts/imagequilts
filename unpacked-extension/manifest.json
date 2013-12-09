@@ -4,7 +4,9 @@
     "description": "ImageQuilts allows you to make \"quilts\", or matrices of images, out of Google image search results.",
     "version": "3.0",
     "permissions": [
-        "<all_urls>"
+        "<all_urls>",
+        "contextMenus",
+        "tabs"
     ],
     "web_accessible_resources": [
         "js/app.js",
