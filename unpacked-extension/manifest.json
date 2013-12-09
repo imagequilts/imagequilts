@@ -14,6 +14,9 @@
         "fonts/lato-lig-webfont.ttf",
         "fonts/lato-reg-webfont.ttf"
     ],
+    "background": {
+        "scripts": ["js/background.js"]
+    },
     "icons": {
         "16": "icons/icon16.png",
         "48": "icons/icon48.png",
@@ -23,7 +26,6 @@
         "default_icon": {
             "38": "icons/icon48.png"
         },
-        "default_title": "ImageQuilts",
-        "default_popup": "html/popup.html"
+        "default_title": "ImageQuilts"
     }
 }
