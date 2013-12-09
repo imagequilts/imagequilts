@@ -1,25 +1,51 @@
-chrome.browserAction.onClicked.addListener(function(){
+chrome.browserAction.setBadgeBackgroundColor({'color': '#000'});
+
+var active = false;
+var imageUrls = null;
+function fetchImageUrls(cb){
+  handlers.push(cb);
+
+  if (active)
+    return;
+    
+  active = true;
+
   chrome.windows.getCurrent(function (currentWindow) {
     chrome.tabs.query({active: true, windowId: currentWindow.id}, function(activeTabs) {
       chrome.tabs.executeScript(activeTabs[0].id, {file: 'js/findImages.js', allFrames: true});
     });
   });
+}
+
+handlers = [];
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+  if (request.urls){
+    for (var i=handlers.length; i--;)
+      handlers[i](request.urls);
+
+    handlers = [];
+    active = false;
+    if (request.urls.length)
+      imageUrls = request.urls;
+  }
 });
 
-var ourTab = null;
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-  if (!request.urls || !request.urls.length) return;
+chrome.browserAction.onClicked.addListener(function(){
+  imageUrls = null;
+  fetchImageUrls(showQuilt); 
+});
 
+function showQuilt(urls){
   var cb = function(tab){
     if (tab){
-      chrome.tabs.sendRequest(ourTab, request);
+      chrome.tabs.sendRequest(ourTab, {urls: urls});
       chrome.tabs.update(ourTab, {selected: true});
     } else {
       chrome.tabs.create({
         'url': chrome.extension.getURL('html/index.html')
       }, function(tab) {
         ourTab = tab.id;
-        chrome.tabs.sendRequest(tab.id, request);
+        chrome.tabs.sendRequest(tab.id, {urls: urls});
       });
     }
   };
@@ -28,8 +54,39 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     chrome.tabs.get(ourTab, cb);
   else
     cb();
+}
+
+var ourTab = null;
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+  if (!request.urls || !request.urls.length) return;
+
 });
 
+chrome.tabs.onRemoved.addListener(function(tabId){
+  if (ourTab === tabId){
+    chrome.browserAction.setBadgeText({'text': ''});
+    ourTab = null;
+  }
+});
+
+chrome.tabs.onActivated.addListener(function(info){
+  // TODO: Check windowId
+  active = false;
+  handlers = [];
+  imageUrls = null;
+
+  if (ourTab === info.tabId)
+    chrome.browserAction.setBadgeText({'text': ''});
+  else if (ourTab != null)
+    updateBadgeCount();
+});
+
+function updateBadgeCount(){
+  fetchImageUrls(function(urls){
+    var count = Math.min(urls.length, 999);
+    chrome.browserAction.setBadgeText({'text': '+' + count});
+  });
+}
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   if (request.type === 'screenshot'){
