@@ -2,25 +2,27 @@
 
     var app = {};
 
-    app.makeQuilt = function(images) {
+    app.images = [];
+
+    app.makeQuilt = function() {
         // Grab all images
         var $body = $('body'),
             $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
             $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0" data-zoom="0.75"></div>'),
             $tools = $('<div class="tools"></div>'),
             $imagesContainer = $('<div>'),
-            i,
-            $images
+            $images,
+            i
         ;
 
-        for (i = 0; i < images.length; i++) {
-            $imagesContainer.append('<img class="image" src="' + images[i] + '" />');
+        for (i = 0; i < app.images.length; i++) {
+            $imagesContainer.append('<img class="image" src="' + app.images[i] + '" />');
         }
 
         $images = $imagesContainer.find('img');
 
         $body[0].className = '';
-        $body.empty().attr('id', '').css('cssText', '').css('visibility', 'hidden').addClass('chrome-image-quilts');
+        $body.empty().css('visibility', 'hidden').addClass('chrome-image-quilts');
         $body.append('<div style="-webkit-transform: translateZ(0)"></div>');
 
         $body.append($tools);
@@ -111,20 +113,21 @@
         $body.css('visibility', 'visible');
     };
 
-    chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
-        app.makeQuilt(request.urls);
+    chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+        app.images.unshift.apply(app.images, request.urls);
+        app.makeQuilt();
     });
 
-    function saveExport(){
-      document.body.classList.add('capturing');
+    function saveExport() {
+        document.body.classList.add('capturing');
 
-      // Force repaint
-      document.body.clientHeight;
+        setTimeout(function(){
+            chrome.runtime.sendMessage({type: 'screenshot'});
 
-      chrome.runtime.sendMessage({type: 'screenshot'});
-      setTimeout(function(){
-        document.body.classList.remove('capturing');
-      });
+            setTimeout(function(){
+                document.body.classList.remove('capturing');
+            }, 0);
+        }, 300);
     }
 
 })();

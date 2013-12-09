@@ -96,11 +96,7 @@
 }
 
 .chrome-image-quilts .tools a.right {
-    float: right;
-}
-
-body.capturing.chrome-image-quilts .tools {
-    display: none;
+    float: right
 }
 
 .chrome-image-quilts .quilt-wrapper {
@@ -247,4 +243,12 @@ body.capturing.chrome-image-quilts .tools {
     .chrome-image-quilts .tools span.label {
         left: 14px;
     }
+}
+
+.chrome-image-quilts.capturing .tools {
+    display: none
+}
+
+.chrome-image-quilts.capturing .quilt-wrapper {
+    margin-top: 0
 }
