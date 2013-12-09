@@ -6,28 +6,14 @@ chrome.browserAction.onClicked.addListener(function(){
   });
 });
 
-function tabExists(id, cb){
-  if (id === null){
-    return cb(false);
-  }
-
-  chrome.tabs.get(id, function(tab){
-    if (typeof tab === 'undefined')
-      cb(false);
-    else
-      cb(true);
-  });
-}
-
 var ourTab = null;
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   if (!request.urls || !request.urls.length) return;
 
-  console.log('z');
-  tabExists(ourTab, function(exists){
-    console.log('x');
-    if (exists){
+  var cb = function(tab){
+    if (tab){
       chrome.tabs.sendRequest(ourTab, request);
+      chrome.tabs.update(ourTab, {selected: true});
     } else {
       chrome.tabs.create({
         'url': chrome.extension.getURL('html/index.html')
@@ -36,7 +22,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         chrome.tabs.sendRequest(tab.id, request);
       });
     }
-  });
+  };
+
+  if (ourTab)
+    chrome.tabs.get(ourTab, cb);
+  else
+    cb();
 });
 
 
