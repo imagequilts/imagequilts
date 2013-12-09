@@ -10,8 +10,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   if (!request.urls.length) return;
 
   chrome.tabs.create({
-    'url': chrome.extension.getURL('html/quilt.html')
+    'url': chrome.extension.getURL('html/index.html')
   }, function(tab) {
-    chrome.tabs.sendRequest(tab.id, request, function(){console.log('fdgfsa');});
+    chrome.tabs.sendRequest(tab.id, request);
   });
 });
