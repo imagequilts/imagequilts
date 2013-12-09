@@ -6,6 +6,7 @@
     "permissions": [
         "<all_urls>",
         "contextMenus",
+        "downloads",
         "tabs"
     ],
     "web_accessible_resources": [

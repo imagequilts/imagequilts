@@ -125,8 +125,8 @@ function imageToDownload(src){
 
   var url = (window.webkitURL || window.URL).createObjectURL(blob);
 
-  chrome.tabs.create({
-    'url': url
+  chrome.downloads.download({
+    url: url,
+    filename: 'ImageQuilt.png'
   });
 }
-
