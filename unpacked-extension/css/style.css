@@ -141,8 +141,16 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     text-shadow: 0 0 15px #fff
 }
 
-.chrome-image-quilts .tools a.right {
-    float: right
+.chrome-image-quilts .tools a.export {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(224, 211, 139);
+    color: #000;
+    height: auto;
+    line-height: 50px;
+    padding: 0 20px;
 }
 
 .chrome-image-quilts .quilt-wrapper {
