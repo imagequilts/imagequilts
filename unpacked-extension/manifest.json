@@ -17,7 +17,9 @@
         "fonts/lato-reg-webfont.ttf"
     ],
     "background": {
-        "scripts": ["js/background.js"]
+        "scripts": [
+            "js/background.js"
+        ]
     },
     "icons": {
         "16": "icons/icon16.png",
