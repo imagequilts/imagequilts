@@ -101,7 +101,6 @@
         ;
 
         $quilt.on('click', '.close', function(e){
-            console.log(e.target, this, e.target === this);
             $(this).parent().remove();
         });
 
