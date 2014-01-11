@@ -83,8 +83,7 @@
             .append($('<a>Inverted</a>').click(function(){ $quilt.attr('data-invert', parseInt($quilt.attr('data-invert'), 10) === 1 ? 0 : 1); }))
 
             // Export
-            .append($('<a class="right">Export</a>').click(saveExport))
-
+            .append($('<a class="export">Export</a>').click(app.saveExport))
         ;
 
         $body.append($quiltWrapper);
@@ -112,12 +111,7 @@
         $body.css('visibility', 'visible');
     };
 
-    chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-        app.images.unshift.apply(app.images, request.urls);
-        app.makeQuilt();
-    });
-
-    function saveExport() {
+    app.saveExport = function() {
         document.body.classList.add('capturing');
 
         setTimeout(function(){
@@ -127,6 +121,20 @@
                 document.body.classList.remove('capturing');
             }, 0);
         }, 300);
-    }
+    };
 
+    app.init = function() {
+        setTimeout(function(){
+            if (!app.images.length) {
+                $('.loading').addClass('show');
+            }
+        }, 300);
+    };
+
+    chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+        app.images.unshift.apply(app.images, request.urls);
+        app.makeQuilt();
+    });
+
+    app.init();
 })();
