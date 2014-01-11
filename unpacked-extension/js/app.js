@@ -16,7 +16,7 @@
         ;
 
         for (i = 0; i < app.images.length; i++) {
-            $imagesContainer.append('<img class="image" src="' + app.images[i] + '" />');
+            $imagesContainer.append('<img src="' + app.images[i] + '" />');
         }
 
         $images = $imagesContainer.find('img');
