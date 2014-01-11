@@ -107,7 +107,33 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
-function imageToDownload(src){
+function humanDate() {
+  var now, hours, minutes, seconds, day, month, year, orderinal;
+
+  now = new Date();
+  hours = now.getHours();
+  minutes = now.getMinutes();
+  seconds = now.getSeconds();
+  day = now.getDate();
+  month = now.getMonth() + 1;
+  year = now.getFullYear();
+
+  orderinal = 'A';
+
+  if (hours >= 12) {
+      hours -= 12;
+      orderinal = 'P';
+  }
+  if (hours === 0) hours = 12;
+  if (minutes <= 9) minutes = '0' + minutes;
+  if (seconds <= 9) seconds = '0' + seconds;
+  if (day <= 9) day = '0' + day;
+  if (month <= 9) month = '0' + month;
+
+  return year + '-' + day + '-' + month + ' at ' + hours + '.' + minutes + '.' + seconds + ' ' + orderinal + 'M';
+}
+
+function imageToDownload(src) {
   var image_data = atob(src.split(',')[1]);
 
   var arraybuffer = new ArrayBuffer(image_data.length);
@@ -127,6 +153,6 @@ function imageToDownload(src){
 
   chrome.downloads.download({
     url: url,
-    filename: 'ImageQuilt.png'
+    filename: 'ImageQuilt ' + (humanDate()) + '.png'
   });
 }
