@@ -7,13 +7,13 @@ chrome.contextMenus.create({
   onclick: handleContextClick
 });
 
-function handleContextClick(info){
+function handleContextClick(info) {
   showQuilt([info.srcUrl]);
 }
 
 var active = false;
 var imageUrls = null;
-function fetchImageUrls(cb){
+function fetchImageUrls(cb) {
   handlers.push(cb);
 
   if (active)
@@ -29,8 +29,8 @@ function fetchImageUrls(cb){
 }
 
 handlers = [];
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-  if (request.urls){
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.urls) {
     for (var i=handlers.length; i--;)
       handlers[i](request.urls);
 
@@ -41,14 +41,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   }
 });
 
-chrome.browserAction.onClicked.addListener(function(){
+chrome.browserAction.onClicked.addListener(function() {
   imageUrls = null;
   fetchImageUrls(showQuilt);
 });
 
-function showQuilt(urls){
-  var cb = function(tab){
-    if (tab){
+function showQuilt(urls) {
+  var cb = function(tab) {
+    if (tab) {
       chrome.tabs.sendRequest(ourTab, {urls: urls});
       chrome.tabs.update(ourTab, {selected: true});
     } else {
@@ -68,19 +68,19 @@ function showQuilt(urls){
 }
 
 var ourTab = null;
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (!request.urls || !request.urls.length) return;
 
 });
 
-chrome.tabs.onRemoved.addListener(function(tabId){
-  if (ourTab === tabId){
+chrome.tabs.onRemoved.addListener(function(tabId) {
+  if (ourTab === tabId) {
     chrome.browserAction.setBadgeText({'text': ''});
     ourTab = null;
   }
 });
 
-chrome.tabs.onActivated.addListener(function(info){
+chrome.tabs.onActivated.addListener(function(info) {
   // TODO: Check windowId
   active = false;
   handlers = [];
@@ -92,16 +92,16 @@ chrome.tabs.onActivated.addListener(function(info){
     updateBadgeCount();
 });
 
-function updateBadgeCount(){
-  fetchImageUrls(function(urls){
+function updateBadgeCount() {
+  fetchImageUrls(function(urls) {
     var count = Math.min(urls.length, 999);
     chrome.browserAction.setBadgeText({'text': '+' + count});
   });
 }
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-  if (request.type === 'screenshot'){
-    chrome.tabs.captureVisibleTab(function(dataUrl){
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.type === 'screenshot') {
+    chrome.tabs.captureVisibleTab(function(dataUrl) {
       imageToDownload(dataUrl);
     });
   }
