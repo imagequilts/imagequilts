@@ -129,7 +129,7 @@
             // Zoom
             .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')
             .append($('<a class="zoom-tool">100</a>').click(function(){ $(this).next().val(100).change(); }))
-            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').change(_.debounce(function(e){ $quilt.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ')'); }); }, 20)))
+            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').change(_.debounce(function(e){ $quilt.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)'); }); }, 20)))
             .append($('<a class="zoom-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Scale
@@ -203,7 +203,7 @@
     app.setupIndividualZooms = function() {
         $('.image .zoom').empty().append(
             $('<input type="range" min="100" max="300" value="120">').change(function(e){
-                $(e.target).parents('.image').find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ')');
+                $(e.target).parents('.image').find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)');
             })
         );
     };

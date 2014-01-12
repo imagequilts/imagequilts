@@ -220,7 +220,8 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     position: relative;
     top: 3px;
     width: 70px;
-    -webkit-filter: sepia(1) saturate(0.5); /* Beautiful! */
+    -webkit-filter: sepia(1) saturate(0.5);
+    -webkit-transform: translateZ(0); /* Retina displays need this or the -webkit-filter pixelates */
 }
 
 .chrome-image-quilts .tools a:hover {
@@ -361,8 +362,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     width: auto;
     height: 150px;
     background: #fff;
-    -webkit-transform: scale(1);
-    /*-webkit-transition: -webkit-transform .5s, -webkit-filter .5s;*/
+    -webkit-transform: scale(1) translateZ(0);
     -webkit-transition: -webkit-filter .5s;
 }
 
