@@ -15,7 +15,7 @@ function load() {
   chrome.runtime.sendMessage({ urls: urls });
 }
 
-if (document.readyState != 'complete') {
+if (document.readyState != 'complete' && !document.querySelectorAll('body *').length) {
   document.addEventListener('DOMContentLoaded', load);
 } else {
   load();
