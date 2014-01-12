@@ -156,3 +156,11 @@ function imageToDownload(src) {
     filename: 'ImageQuilt ' + (humanDate()) + '.png'
   });
 }
+
+chrome.runtime.onInstalled.addListener(function(details){
+  if (details.reason === 'update' || details.reason === 'chrome_update') {
+    chrome.tabs.create({
+      'url': chrome.extension.getURL('html/update.html')
+    });
+  }
+});

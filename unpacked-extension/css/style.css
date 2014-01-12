@@ -76,6 +76,25 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     max-width: 90%;
 }
 
+.loading h3 {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 300;
+    color: rgb(224, 211, 139);
+    width: 350px;
+    margin: 20px auto 0;
+    max-width: 90%;
+}
+
+.loading p {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 300;
+    width: 500px;
+    margin: 20px auto 0;
+    max-width: 90%;
+}
+
 .loading ol {
     font-size: 16px;
     display: inline-block;
@@ -83,6 +102,10 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     text-align: left;
     max-width: 90%;
     line-height: 20px;
+}
+
+.loading ol li {
+    margin-bottom: 5px;
 }
 
 .loading .icon {
