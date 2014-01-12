@@ -158,7 +158,7 @@ function imageToDownload(src) {
 }
 
 chrome.runtime.onInstalled.addListener(function(details){
-  if (details.reason === 'update' || details.reason === 'chrome_update') {
+  if ((details.reason === 'update' || details.reason === 'chrome_update') && parseFloat(details.previousVersion) < 3) {
     chrome.tabs.create({
       'url': chrome.extension.getURL('html/update.html')
     });
