@@ -1,18 +1,37 @@
 function load() {
-  var images = document.querySelectorAll('img');
+  var elements = document.querySelectorAll('body *');
 
   var urls = [];
 
-  for (var i = images.length; i--;) {
-    var image = images[i];
+  for (var i = elements.length; i--;) {
+    var element = elements[i];
+    var url;
 
-    if (image.clientWidth < 40 || image.clientHeight < 40)
-      continue;
+    if (element && element.tagName === 'IMG') {
+      if (element.clientWidth < 40 || element.clientHeight < 40) {
+        continue;
+      }
+      url = element.src;
+    } else {
+      var match = element.style.backgroundImage.match(/^url\((http?\:\/\/.*)\)/);
+      if (match && match.length === 2) {
+        url = match[1];
+      }
+    }
 
-    urls.unshift(image.src);
+    if (url) {
+      if (url.match(/pixel|blank\.gif$/)) {
+        continue;
+      }
+      urls.unshift(url);
+    }
   }
 
-  chrome.runtime.sendMessage({ urls: urls });
+  var uniqueURLs = urls.filter(function(elem, pos) {
+    return urls.indexOf(elem) == pos;
+  });
+
+  chrome.runtime.sendMessage({ urls: uniqueURLs });
 }
 
 if (document.readyState != 'complete' && !document.querySelectorAll('body *').length) {
