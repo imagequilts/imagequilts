@@ -4,6 +4,8 @@
 
     app.images = [];
 
+    app.uniqueImageID = 1;
+
     app.init = function() {
         app.setupImageListener();
         app.setupDragAndDropListener();
@@ -12,9 +14,29 @@
 
     app.setupImageListener = function() {
         chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-            app.images.unshift.apply(app.images, request.urls);
+            app.addImages(request.urls);
             app.makeQuilt();
         });
+    };
+
+    app.addImages = function(urlArray) {
+        for (var i = 0; i < urlArray.length; i++) {
+            app.addImage(urlArray[i]);
+        }
+    };
+
+    app.addImage = function(url) {
+        app.images.push({
+            url: url,
+            id: app.uniqueImageID
+        });
+
+        app.uniqueImageID += 1;
+    };
+
+    app.removeImage = function(id) {
+        app.images = _.without(app.images, _.findWhere(app.images, { id: id }));
+        $('.image[data-id="' + id + '"]').remove();
     };
 
     app.setupDragAndDropListener = function() {
@@ -23,19 +45,31 @@
                 var files = e.dataTransfer.files;
                 var j = 0;
                 for (var i = 0; i < files.length; i++) {
-                    var reader = new FileReader();
-                    reader.onload = function(e){
-                        app.images.unshift(e.target.result);
+                    var file = files[i];
+                    if (!file.type || !file.type.split('\/').length || file.type.split('\/')[0].toLowerCase() !== 'image') {
                         if (j === files.length - 1) {
                             app.makeQuilt();
                         }
                         j += 1;
-                    };
-                    reader.readAsDataURL(files[i]);
+                    } else {
+                        var reader = new FileReader();
+                        reader.onload = function(e){
+                            app.addImage(e.target.result);
+                            if (j === files.length - 1) {
+                                app.makeQuilt();
+                            }
+                            j += 1;
+                        };
+                        reader.readAsDataURL(file);
+                    }
                 }
             }
             e.preventDefault();
             return false;
+        };
+
+        document.body.mouseup = function(e) {
+            $('body').removeClass('dragenter dragover');
         };
 
         document.body.ondragleave = function(e) {
@@ -58,7 +92,12 @@
     };
 
     app.makeQuilt = function() {
-        // Grab all images
+        if (!app.images.length) {
+            $('body').removeClass('dragenter dragover');
+            $('.update-outer').removeClass('show');
+            return;
+        }
+
         var $body = $('body'),
             $quiltScrollWrapper = $('<div class="quilt-scroll-wrapper"></div>'),
             $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
@@ -70,7 +109,7 @@
         ;
 
         for (i = 0; i < app.images.length; i++) {
-            $imagesContainer.append('<img src="' + app.images[i] + '" />');
+            $imagesContainer.append('<img draggable="false" data-id="' + app.images[i].id + '" src="' + app.images[i].url + '" />');
         }
 
         $images = $imagesContainer.find('img');
@@ -88,24 +127,24 @@
             )
 
             // Zoom
-            .append('<span class="label zoom-tool">Zoom&nbsp;(Percent)</span>')
-            .append($('<a class="zoom-tool">100</a>'))
+            .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')
+            .append($('<a class="zoom-tool">100</a>').click(function(){ $(this).next().val(100).change(); }))
             .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').change(_.debounce(function(e){ $quilt.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ')'); }); }, 20)))
-            .append($('<a class="zoom-tool">300</a>'))
+            .append($('<a class="zoom-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Scale
-            .append('<span class="label scale-tool">Height&nbsp;(px)</span>')
-            .append($('<a class="scale-tool">30</a>').click(function(){ $(this).next().val(30); }))
+            .append('<span class="label scale-tool">Row&nbsp;height&nbsp;in&nbsp;pixels</span>')
+            .append($('<a class="scale-tool">30</a>').click(function(){ $(this).next().val(30).change(); }))
             .append($('<input class="scale-tool" type="range" min="30" max="300" value="150">').change(_.debounce(function(e){ $quilt.find('.image, .image img').each(function(){ $(this).css('height', e.target.value); }); }, 20)))
-            .append($('<a class="scale-tool">300</a>').click(function(){ $(this).prev().val(300); }))
+            .append($('<a class="scale-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Order
             .append('<span class="label order-tool">Order</span>')
             .append($('<a class="order-tool">Original</a>').click(function(){
                 $images = $quilt.find('.image').toArray();
                 $images.sort(function(a, b){
-                    a = parseInt($(a).attr('data-original-order'), 10);
-                    b = parseInt($(b).attr('data-original-order'), 10);
+                    a = parseInt($(a).attr('data-id'), 10);
+                    b = parseInt($(b).attr('data-id'), 10);
                     if (a < b) return -1;
                     if (a > b) return 1;
                     return 0;
@@ -141,7 +180,8 @@
         $quilt.append($images);
 
         $quilt.find('img').each(function(i){
-            $(this).css('cssText', '').wrap('<div class="image" data-zoom="1" data-original-order="' + i + '"></div>');
+            var $img = $(this);
+            $img.wrap('<div class="image" data-zoom="1" data-id="' + $img.attr('data-id') + '"></div>');
         });
 
         $quilt.find('.image')
@@ -150,7 +190,7 @@
         ;
 
         $quilt.on('click', '.close', function(e){
-            $(this).parent().remove();
+            app.removeImage(parseInt($(this).parent().attr('data-id'), 10));
         });
 
         app.setupIndividualZooms();
@@ -183,7 +223,7 @@
     app.decideToShowLoading = function() {
         setTimeout(function(){
             if (!app.images.length) {
-                $('.loading').addClass('show');
+                $('.update-outer').addClass('show');
             }
         }, 50);
     };
