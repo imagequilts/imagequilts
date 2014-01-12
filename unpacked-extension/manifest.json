@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "ImageQuilts",
-    "description": "ImageQuilts allows you to make \"quilts\", or matrices of images, out of Google image search results.",
+    "description": "ImageQuilts allows you to make \"quilts\" from images on your computer or anywhere on the web.",
     "version": "3.0",
     "permissions": [
         "<all_urls>",
