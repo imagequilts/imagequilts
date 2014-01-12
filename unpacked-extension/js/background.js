@@ -31,7 +31,7 @@ function fetchImageUrls(cb) {
 handlers = [];
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.urls) {
-    for (var i=handlers.length; i--;)
+    for (var i = handlers.length; i--;)
       handlers[i](request.urls);
 
     handlers = [];
