@@ -23,7 +23,7 @@ function fetchImageUrls(cb) {
 
   chrome.windows.getCurrent(function (currentWindow) {
     chrome.tabs.query({active: true, windowId: currentWindow.id}, function(activeTabs) {
-      chrome.tabs.executeScript(activeTabs[0].id, {file: 'js/findImages.js?_' + Math.floor(Math.random() * 9999999), allFrames: true});
+      chrome.tabs.executeScript(activeTabs[0].id, {file: 'js/findImages.js', allFrames: true});
     });
   });
 }
