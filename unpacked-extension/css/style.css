@@ -381,16 +381,18 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     -webkit-transition: opacity .5s;
     overflow: hidden;
     text-transform: uppercase;
+    -webkit-filter: sepia(1) saturate(0.5);
     -webkit-transform: translateZ(0);
 }
 
 .chrome-image-quilts .image .zoom input {
     position: absolute;
-    left: 13px;
-    right: 13px;
+    left: 0;
+    right: 0;
     top: 1px;
     bottom: 0;
     margin: auto;
+    max-width: 78%;
 }
 
 .chrome-image-quilts .image .zoom:active {
