@@ -381,6 +381,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     -webkit-transition: opacity .5s;
     overflow: hidden;
     text-transform: uppercase;
+    -webkit-transform: translateZ(0);
 }
 
 .chrome-image-quilts .image .zoom input {
