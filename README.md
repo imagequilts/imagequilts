@@ -1,4 +1,6 @@
-# ![](https://raw.github.com/adamschwartz/imagequilts/master/unpacked-extension/icons/icon48.png) &nbsp;ImageQuilts
+![](https://raw.github.com/adamschwartz/imagequilts/master/unpacked-extension/icons/icon48.png)
+
+# ImageQuilts
 
 #### [Download ImageQuilts](https://chrome.google.com/webstore/detail/imagequilts/ceebcpbapdnfnkhfogkbhbgknhgnaoee)
 
