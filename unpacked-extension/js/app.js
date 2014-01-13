@@ -129,13 +129,13 @@
             // Zoom
             .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')
             .append($('<a class="zoom-tool">100</a>').click(function(){ $(this).next().val(100).change(); }))
-            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').change(_.debounce(function(e){ $quilt.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)'); }); }, 20)))
+            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').change(function(e){ $quilt.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)'); }); }))
             .append($('<a class="zoom-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Scale
             .append('<span class="label scale-tool">Row&nbsp;height&nbsp;in&nbsp;pixels</span>')
             .append($('<a class="scale-tool">30</a>').click(function(){ $(this).next().val(30).change(); }))
-            .append($('<input class="scale-tool" type="range" min="30" max="300" value="150">').change(_.debounce(function(e){ $quilt.find('.image, .image img').each(function(){ $(this).css('height', e.target.value); }); }, 20)))
+            .append($('<input class="scale-tool" type="range" min="30" max="300" value="150">').change(function(e){ $quilt.find('.image, .image img').each(function(){ $(this).css('height', e.target.value); }); }))
             .append($('<a class="scale-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Order
