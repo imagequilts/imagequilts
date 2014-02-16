@@ -204,12 +204,16 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
 }
 
 .chrome-image-quilts .tools span.logo {
+    font-family: "Futura", "Gill Sans", "latoregular", "Helvetica Neue", sans-serif;
+    letter-spacing: .05em;
     color: red;
     margin: 0 20px;
     padding: 0 5px 0 0;
-    font-size: 17px;
+    font-size: 16px;
     position: relative;
     top: -4px;
+    font-style: italic;
+    text-transform: none;
 }
 
 .chrome-image-quilts .tools a {
@@ -233,6 +237,10 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
 }
 
 .chrome-image-quilts .tools a.export {
+    font-family: "Futura", "Gill Sans", "latoregular", "Helvetica Neue", sans-serif;
+    letter-spacing: .05em;
+    font-style: italic;
+    text-transform: none;
     background: red;
     color: #fffff3;
     height: auto;
