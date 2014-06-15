@@ -30,6 +30,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
 
 ::-webkit-scrollbar {
     width: 0px;
+    height: 0px;
 }
 
 ::-webkit-scrollbar-thumb {
