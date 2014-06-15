@@ -445,7 +445,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     margin: auto;
     width: 150px;
     max-width: 90%;
-    height: 36px;
+    height: 30px;
     background: rgba(0, 0, 0, .8);
     top: 0;
     left: 0;
@@ -466,7 +466,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     top: 1px;
     bottom: 0;
     margin: auto;
-    max-width: 78%;
+    max-width: 85%;
 }
 
 .chrome-image-quilts .image .zoom:active {
