@@ -197,8 +197,8 @@
             )
 
             // Alignment
-            .append($('<a class="flush-left">&nbsp;<b></b><b></b><b></b><b></b></a>').click(function(){ $quilt.attr('alignment', 'flush-left'); }))
-            .append($('<a class="central-axis">&nbsp;<b></b><b></b><b></b><b></b></a>').click(function(){ $quilt.attr('alignment', 'central-axis'); }))
+            .append($('<a class="flush-left"><i>&nbsp;<b></b><b></b><b></b><b></b></i></a>').click(function(){ $quilt.attr('alignment', 'flush-left'); }))
+            .append($('<a class="central-axis"><i>&nbsp;<b></b><b></b><b></b><b></b></i></a>').click(function(){ $quilt.attr('alignment', 'central-axis'); }))
 
             // Zoom
             .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')

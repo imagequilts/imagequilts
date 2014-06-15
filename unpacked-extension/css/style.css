@@ -255,13 +255,14 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     border-radius: 3px;
 }
 
-.flush-left, .central-axis {
-    position: relative
+.flush-left {
+    margin-left: 10px
 }
 
-.flush-left {
-    margin-left: 10px;
-    margin-right: 10px
+.flush-left i, .central-axis i {
+    position: relative;
+    display: inline-block;
+    width: 16px;
 }
 
 .flush-left b, .central-axis b {
@@ -583,7 +584,7 @@ body.dragover .drag-helper {
     left: 0;
     right: 0;
     bottom: 0;
-    border: 30px solid #2cc06d;
+    border: 6px solid #fffff3;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
@@ -591,9 +592,11 @@ body.dragover .drag-helper {
 
 .drag-helper .message {
     pointer-events: none;
-    color: #2cc06d;
+    color: #fffff3;
     font-size: 28px;
     font-family: "Gill Sans", "latolight";
+    font-weight: 300;
+    letter-spacing: .05em;
     text-align: center;
     width: 100%;
 }
