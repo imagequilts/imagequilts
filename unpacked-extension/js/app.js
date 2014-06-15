@@ -101,7 +101,7 @@
         var $body = $('body'),
             $quiltScrollWrapper = $('<div class="quilt-scroll-wrapper"></div>'),
             $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
-            $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0"></div>'),
+            $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0" alignment="central-axis"></div>'),
             $tools = $('<div class="tools"></div>'),
             $imagesContainer = $('<div>'),
             $images,
@@ -125,6 +125,10 @@
             .append(
                 $('<span class="logo">ImageQuilts</span>')
             )
+
+            // Alignment
+            .append($('<a class="flush-left">&nbsp;<b></b><b></b><b></b><b></b></a>').click(function(){ $quilt.attr('alignment', 'flush-left'); }))
+            .append($('<a class="central-axis">&nbsp;<b></b><b></b><b></b><b></b></a>').click(function(){ $quilt.attr('alignment', 'central-axis'); }))
 
             // Zoom
             .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')

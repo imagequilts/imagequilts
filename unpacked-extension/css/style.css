@@ -254,6 +254,58 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     border-radius: 3px;
 }
 
+.flush-left, .central-axis {
+    position: relative
+}
+
+.flush-left {
+    margin-left: 10px;
+    margin-right: 10px
+}
+
+.flush-left b, .central-axis b {
+    position: absolute;
+    display: block;
+    height: 1px;
+    background: #777
+}
+
+.flush-left:hover b, .central-axis:hover b {
+    background: red
+}
+
+.flush-left b:nth-child(1),
+.central-axis b:nth-child(1) {
+    top: 8px;
+    left: 0;
+    width: 10px
+}
+
+.flush-left b:nth-child(2),
+.central-axis b:nth-child(2) {
+    top: 12px;
+    left: 0;
+    width: 16px
+}
+
+.flush-left b:nth-child(3),
+.central-axis b:nth-child(3) {
+    top: 16px;
+    left: 0;
+    width: 10px
+}
+
+.flush-left b:nth-child(4),
+.central-axis b:nth-child(4) {
+    top: 20px;
+    left: 0;
+    width: 6px
+}
+
+.central-axis b:nth-child(1) { left: 3px }
+.central-axis b:nth-child(3) { left: 3px }
+.central-axis b:nth-child(4) { left: 5px }
+
 @media (max-width: 1000px) {
     .color-mode-tool {
         display: none !important;
@@ -273,6 +325,10 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
 }
 
 @media (max-width: 520px) {
+    .flush-left, .central-axis {
+        display: none !important;
+    }
+
     .zoom-tool {
         display: none !important;
     }
@@ -312,6 +368,15 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     margin: 0px;
     overflow: hidden;
     font-size: 0;
+}
+
+.chrome-image-quilts .quilt[alignment="flush-left"] {
+    text-align: left
+}
+
+.chrome-image-quilts .quilt[alignment="central-axis"] {
+    padding: 50px;
+    text-align: center
 }
 
 .chrome-image-quilts .quilt[data-grayscale="0"][data-invert="0"] .image img {
