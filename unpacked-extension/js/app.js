@@ -68,8 +68,78 @@
             return false;
         };
 
-        document.body.mouseup = function(e) {
+        var currentlyDraggingImage;
+
+        var positionDraggingImage = function(e) {
+            var mouseX = e.clientX + $('.quilt-scroll-wrapper').scrollLeft();
+            var mouseY = e.clientY + $('.quilt-scroll-wrapper').scrollTop();
+            $(currentlyDraggingImage).parents('.image').css({
+                left: (mouseX + 10) + 'px',
+                top: (mouseY + 10) + 'px'
+            });
+        };
+
+        document.body.onmousedown = function(e) {
+            if (e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
+                currentlyDraggingImage = e.target;
+                $(currentlyDraggingImage).parents('.image').addClass('currently-dragging');
+                positionDraggingImage(e);
+                $('body').addClass('dragging-image');
+            }
+        };
+
+        var determineDraggedOverLeftOrRight = function(element, e) {
+            var mouseX = e.clientX + $('.quilt-scroll-wrapper').scrollLeft();
+            var bounding = element.getBoundingClientRect();
+            var midway = bounding.left + ((bounding.right - bounding.left) / 2);
+            if (midway > mouseX) {
+                $(element).parents('.image').attr('dragged-over-side', 'left');
+            } else {
+                $(element).parents('.image').attr('dragged-over-side', 'right');
+            }
+        };
+
+        document.body.onmousemove = function(e) {
+            $('.image.dragged-over').removeClass('dragged-over');
+            $('.drop-guide').remove();
+
+            if (currentlyDraggingImage) {
+                positionDraggingImage(e);
+
+                if (e.toElement && e.toElement.tagName && e.toElement.tagName.toLowerCase() === 'img' && e.toElement !== currentlyDraggingImage) {
+                    $(e.toElement).parents('.image').addClass('dragged-over').append('<div class="drop-guide"></div>');
+                    determineDraggedOverLeftOrRight(e.toElement, e);
+                }
+            }
+        };
+
+        var dropImage = function() {
+            $('.drop-guide').remove();
+            $(currentlyDraggingImage).parents('.image').removeClass('currently-dragging').css({ top: 0, left: 0 });
+            $('body').removeClass('dragging-image');
+            currentlyDraggingImage = undefined;
+        };
+
+        document.body.onmouseup = function(e) {
             $('body').removeClass('dragenter dragover');
+
+            var $draggedOver = $('.image.dragged-over');
+
+            if ($draggedOver.length) {
+                var method = 'before';
+                if ($draggedOver.attr('dragged-over-side') === 'right') {
+                    method = 'after';
+                }
+                $('.image.dragged-over').removeClass('dragged-over')[method]($(currentlyDraggingImage).parents('.image'));
+            }
+
+            dropImage();
+        };
+
+        window.onmouseout = function(e) {
+            if (e.toElement && e.toElement.tagName && e.toElement.tagName.toLowerCase() === 'html') {
+                dropImage();
+            }
         };
 
         document.body.ondragleave = function(e) {

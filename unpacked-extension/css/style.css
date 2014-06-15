@@ -398,11 +398,71 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
 
 .chrome-image-quilts .image {
     display: inline-block;
+    cursor: move;
     position: relative;
     overflow: hidden;
     max-width: 100%;
     height: 150px;
     -webkit-transform: translateZ(0);
+}
+
+.chrome-image-quilts .image.dragged-over {
+    z-index: 99
+}
+
+.chrome-image-quilts .image .drop-guide {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    bottom: 0;
+    display: none;
+    height: 100%;
+    width: 18px;
+    background: #fffff3;
+}
+
+.chrome-image-quilts .image .drop-guide:before,
+.chrome-image-quilts .image .drop-guide:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 1px;
+    width: 0;
+    height: 0;
+    border-width: 8px;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.chrome-image-quilts .image .drop-guide:before {
+    border-top: 20px solid red;
+    top: 0;
+}
+
+.chrome-image-quilts .image .drop-guide:after {
+    border-bottom: 20px solid red;
+    bottom: 0;
+}
+
+.chrome-image-quilts .image.dragged-over .drop-guide {
+    display: block
+}
+
+.chrome-image-quilts .image.dragged-over[dragged-over-side= "left"] .drop-guide {  left: 0 }
+.chrome-image-quilts .image.dragged-over[dragged-over-side="right"] .drop-guide { right: 0 }
+
+.chrome-image-quilts .image.currently-dragging {
+    position: absolute;
+    box-shadow: 0 0 0 4px red, 0 0 16px 4px black;
+    z-index: 999
+}
+
+body.dragging-image * {
+    cursor: move !important
+}
+
+body.dragging-image .image a {
+    display: none !important
 }
 
 .chrome-image-quilts .image .close {
