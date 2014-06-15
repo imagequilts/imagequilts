@@ -47,7 +47,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     height: 100%;
     width: 100%;
     opacity: 0;
-    transition: opacity 0.4s;
+    transition: opacity .3s;
 }
 
 .update-outer.show {
