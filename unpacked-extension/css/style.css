@@ -412,7 +412,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     left: 0;
     background: rgba(0, 0, 0, .8);
     opacity: 0;
-    -webkit-transition: opacity .5s;
+    -webkit-transition: opacity .1s;
     font-size: 27px;
     padding: 5px 10px 4px;
     line-height: 27px;
@@ -452,7 +452,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     right: 0;
     bottom: 0;
     opacity: 0;
-    -webkit-transition: opacity .5s;
+    -webkit-transition: opacity .1s;
     overflow: hidden;
     text-transform: uppercase;
     -webkit-filter: sepia(1) saturate(0.5);
