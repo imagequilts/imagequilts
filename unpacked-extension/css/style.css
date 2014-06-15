@@ -17,7 +17,7 @@ html {
 }
 
 body {
-    background: #000;
+    background: black;
     font-family: "Gill Sans", "latoregular", "Helvetica Neue", sans-serif;
     margin: 0;
     color: #ccc;
@@ -75,7 +75,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
 .update-outer {
     font-family: "Gill Sans", "latoregular", "Helvetica Neue", sans-serif;
     background: #fffff3;
-    color: #000;
+    color: black;
 }
 
 .update h1 {
