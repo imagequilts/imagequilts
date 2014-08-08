@@ -106,7 +106,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
 }
 
 .update h1 .version .period {
-    margin-left: -3px;
+    margin-left: -1px;
     margin-right: -3px;
 }
 
