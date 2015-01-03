@@ -23,14 +23,14 @@ body {
     color: #ccc;
 }
 
-body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts *:before, .chrome-image-quilts *:after {
+body, body *, .chrome-image-quilts, *, *:before, *:after {
     -webkit-user-select: none;
     box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -156,17 +156,17 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     text-align: center;
 }
 
-.chrome-image-quilts .hidden {
+.hidden {
     visibility: hidden;
 }
 
-.chrome-image-quilts a {
+a {
     cursor: pointer;
     text-align: center;
     display: inline-block;
 }
 
-.chrome-image-quilts .tools {
+.tools {
     background: #fffff3;
     padding: 8px 10px;
     position: fixed;
@@ -177,21 +177,21 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     overflow: hidden;
 }
 
-.chrome-image-quilts .tools span, .chrome-image-quilts .tools a {
+.tools span, .tools a {
     height: 36px;
     font-size: 13px;
     line-height: 42px;
-    padding: 0px 10px;
+    padding: 0 10px;
     text-transform: uppercase;
 }
 
-.chrome-image-quilts .tools span {
+.tools span {
     color: #b6b6b6;
     margin-left: 20px;
     cursor: default;
 }
 
-.chrome-image-quilts .tools span.label {
+.tools span.label {
     width: 0;
     margin: 0;
     padding: 0;
@@ -204,7 +204,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     letter-spacing: .03em;
 }
 
-.chrome-image-quilts .tools span.logo {
+.tools span.logo {
     font-family: "Futura", "Gill Sans", "latoregular", "Helvetica Neue", sans-serif;
     letter-spacing: .05em;
     color: red;
@@ -217,11 +217,11 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     text-transform: none;
 }
 
-.chrome-image-quilts .tools a {
+.tools a {
     color: #777;
 }
 
-.chrome-image-quilts .tools input[type="range"] {
+.tools input[type="range"] {
     position: relative;
     top: 3px;
     width: 70px;
@@ -229,15 +229,15 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     -webkit-transform: translateZ(0); /* Retina displays need this or the -webkit-filter pixelates */
 }
 
-.chrome-image-quilts .tools a:hover {
+.tools a:hover {
     color: red;
 }
 
-.chrome-image-quilts .tools a:hover:active {
+.tools a:hover:active {
     text-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
 }
 
-.chrome-image-quilts .tools a.export {
+.tools a.export {
     font-family: "Futura", "Gill Sans", "latoregular", "Helvetica Neue", sans-serif;
     letter-spacing: .05em;
     font-style: italic;
@@ -335,7 +335,7 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
         display: none !important;
     }
 
-    .chrome-image-quilts .tools a.export {
+    .tools a.export {
         position: absolute;
         top: 8px;
         right: 7px;
@@ -344,12 +344,12 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
         margin: 0;
     }
 
-    .chrome-image-quilts .tools span.logo {
+    .tools span.logo {
         margin-left: 0;
     }
 }
 
-.chrome-image-quilts .quilt-scroll-wrapper {
+.quilt-scroll-wrapper {
     overflow-y: scroll;
     position: fixed;
     top: 0;
@@ -358,46 +358,119 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     right: 0;
 }
 
-.chrome-image-quilts .quilt-wrapper {
-    margin: 0px;
+.quilt-wrapper {
+    margin: 0;
     overflow: hidden;
     font-size: 0;
     width: 100%;
     margin-top: 49px;
 }
 
-.chrome-image-quilts .quilt {
-    margin: 0px;
+.quilt {
+    margin: 0;
     overflow: hidden;
     font-size: 0;
 }
 
-.chrome-image-quilts .quilt[alignment="flush-left"] {
+.quilt[alignment="flush-left"] {
     text-align: left
 }
 
-.chrome-image-quilts .quilt[alignment="central-axis"] {
+.quilt[alignment="central-axis"] {
     padding: 50px;
     text-align: center
 }
 
-.chrome-image-quilts .quilt[data-grayscale="0"][data-invert="0"] .image img {
+.quilt[data-grayscale="0"][data-invert="0"] .image img {
     -webkit-filter: grayscale(0) invert(0);
 }
 
-.chrome-image-quilts .quilt[data-grayscale="0"][data-invert="1"] .image img {
+.quilt[data-grayscale="0"][data-invert="1"] .image img {
     -webkit-filter: grayscale(0) invert(1);
 }
 
-.chrome-image-quilts .quilt[data-grayscale="1"][data-invert="0"] .image img {
+.quilt[data-grayscale="1"][data-invert="0"] .image img {
     -webkit-filter: grayscale(1) invert(0);
 }
 
-.chrome-image-quilts .quilt[data-grayscale="1"][data-invert="1"] .image img {
+.quilt[data-grayscale="1"][data-invert="1"] .image img {
     -webkit-filter: grayscale(1) invert(1);
 }
 
-.chrome-image-quilts .image {
+.quilt-vertical-rag {
+    white-space: nowrap;
+    overflow: hidden;
+    border-color: transparent;
+    border-style: solid;
+    height: 0;
+    transition: background .3s ease-in-out, height .3s ease-in-out;
+}
+
+.quilt[alignment="central-axis"] .quilt-vertical-rag {
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.quilt-vertical-rag .image.ui-resizable:not(.currently-dragging) {
+    left: 0 !important;
+    top: 0 !important;
+}
+
+.quilt-vertical-rag .image .ui-resizable-ne {
+    cursor: nesw-resize;
+    right: 0;
+    top: 0;
+}
+
+.quilt-vertical-rag .image .ui-resizable-sw {
+    cursor: nesw-resize;
+    left: 0;
+    bottom: 0;
+}
+
+.quilt-vertical-rag .image .ui-resizable-se {
+    cursor: nwse-resize;
+    right: 0;
+    bottom: 0;
+}
+
+.quilt-vertical-rag .image .ui-resizable-handle {
+    position: absolute;
+    font-size: 0.1px;
+    display: block;
+    -ms-touch-action: none;
+    touch-action: none;
+    width: 25px;
+    height: 25px;
+}
+
+.quilt-vertical-rag.quilt-top {
+    align-items: flex-end;
+}
+
+.quilt-vertical-rag.quilt-bottom {
+    align-items: flex-start;
+}
+
+
+body.dragging-image .quilt-vertical-rag, .quilt-vertical-rag:not(:empty) {
+    height: 325px;
+}
+
+.quilt[alignment="central-axis"] .quilt-vertical-rag.quilt-top {
+    border-width: 25px 25px 0 25px;
+}
+
+.quilt[alignment="central-axis"] .quilt-vertical-rag.quilt-bottom {
+    border-width: 0 25px 25px 25px;
+}
+
+body.dragging-image .quilt-vertical-rag, .quilt-vertical-rag:not(:empty):hover {
+    background: #2c2c2c;
+}
+
+.image {
     display: inline-block;
     cursor: move;
     position: relative;
@@ -407,11 +480,11 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     -webkit-transform: translateZ(0);
 }
 
-.chrome-image-quilts .image.dragged-over {
+.image.dragged-over {
     z-index: 99
 }
 
-.chrome-image-quilts .image .drop-guide {
+.image .drop-guide {
     position: absolute;
     pointer-events: none;
     top: 0;
@@ -422,8 +495,8 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     background: #fffff3;
 }
 
-.chrome-image-quilts .image .drop-guide:before,
-.chrome-image-quilts .image .drop-guide:after {
+.image .drop-guide:before,
+.image .drop-guide:after {
     content: "";
     display: block;
     position: absolute;
@@ -435,27 +508,31 @@ body, body *, .chrome-image-quilts, .chrome-image-quilts *, .chrome-image-quilts
     border-style: solid;
 }
 
-.chrome-image-quilts .image .drop-guide:before {
+.image .drop-guide:before {
     border-top: 20px solid red;
     top: 0;
 }
 
-.chrome-image-quilts .image .drop-guide:after {
+.image .drop-guide:after {
     border-bottom: 20px solid red;
     bottom: 0;
 }
 
-.chrome-image-quilts .image.dragged-over .drop-guide {
+.image.dragged-over .drop-guide {
     display: block
 }
 
-.chrome-image-quilts .image.dragged-over[dragged-over-side= "left"] .drop-guide {  left: 0 }
-.chrome-image-quilts .image.dragged-over[dragged-over-side="right"] .drop-guide { right: 0 }
+.image.dragged-over[dragged-over-side= "left"] .drop-guide {  left: 0 }
+.image.dragged-over[dragged-over-side="right"] .drop-guide { right: 0 }
 
-.chrome-image-quilts .image.currently-dragging {
+.image.currently-dragging {
     position: absolute;
     box-shadow: 0 0 0 4px red, 0 0 16px 4px black;
     z-index: 999
+}
+
+.image.ui-resizable-resizing .zoom, .image.ui-resizable-resizing .close {
+    opacity: 0 !important
 }
 
 body.dragging-image * {
@@ -466,7 +543,7 @@ body.dragging-image .image a {
     display: none !important
 }
 
-.chrome-image-quilts .image .close {
+.image .close {
     display: block;
     position: absolute;
     top: 0;
@@ -484,24 +561,24 @@ body.dragging-image .image a {
     -webkit-filter: sepia(1) saturate(0.5);
 }
 
-.chrome-image-quilts .image .close:active {
+.image .close:active {
     color: #fff;
     background: rgba(0, 0, 0, 1);
 }
 
-.chrome-image-quilts .image:hover .close {
+.image:hover .close {
     opacity: 1
 }
 
-.chrome-image-quilts .image img {
+.image img {
     width: auto;
-    height: 150px;
+    height: 100%;
     background: #fff;
     -webkit-transform: scale(1) translateZ(0);
     -webkit-transition: -webkit-filter .5s;
 }
 
-.chrome-image-quilts .image .zoom {
+.image .zoom {
     position: absolute;
     margin: auto;
     width: 150px;
@@ -520,7 +597,7 @@ body.dragging-image .image a {
     -webkit-transform: translateZ(0);
 }
 
-.chrome-image-quilts .image .zoom input {
+.image .zoom input {
     position: absolute;
     left: 0;
     right: 0;
@@ -530,31 +607,31 @@ body.dragging-image .image a {
     max-width: 85%;
 }
 
-.chrome-image-quilts .image .zoom:active {
+.image .zoom:active {
     color: #fff;
     background: rgba(0, 0, 0, .8);
 }
 
-.chrome-image-quilts .image:hover .zoom {
+.image:hover .zoom {
     opacity: 1;
 }
 
 @media (max-width: 1200px) {
-    .chrome-image-quilts .tools span, .chrome-image-quilts .tools a {
-        padding: 0px 6px;
+    .tools span, .tools a {
+        padding: 0 6px;
     }
 
-    .chrome-image-quilts .tools span.label {
+    .tools span.label {
         left: 16px;
     }
 }
 
 @media (max-width: 1050px) {
-    .chrome-image-quilts .tools span, .chrome-image-quilts .tools a {
-        padding: 0px 4px;
+    .tools span, .tools a {
+        padding: 0 4px;
     }
 
-    .chrome-image-quilts .tools span.label {
+    .tools span.label {
         left: 14px;
     }
 }

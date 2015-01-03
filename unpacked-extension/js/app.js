@@ -4,6 +4,9 @@
 
     app.images = [];
 
+    app.topImages = [];
+    app.bottomImages = [];
+
     app.uniqueImageID = 1;
 
     app.init = function() {
@@ -100,11 +103,43 @@
         };
 
         document.body.onmousemove = function(e) {
-            $('.image.dragged-over').removeClass('dragged-over');
+            $('.image.dragged-over, .quilt-vertical-rag.dragged-over').removeClass('dragged-over');
             $('.drop-guide').remove();
 
             if (currentlyDraggingImage) {
                 positionDraggingImage(e);
+
+                if (e.toElement && e.toElement.tagName && e.toElement.tagName.toLowerCase() === 'div' && e.toElement.classList.contains('quilt-vertical-rag')) {
+                    if (!$(e.toElement).find('.image').length) {
+                        $(e.toElement).addClass('dragged-over');
+                    } else {
+                        $(e.toElement).removeClass('dragged-over');
+
+                        var mouseX = e.clientX + $('.quilt-scroll-wrapper').scrollLeft();
+                        var imageCenterX = mouseX + $(currentlyDraggingImage).width() / 2;
+
+                        var $closestImage;
+                        var closestImageDistance = 999999;
+                        $(e.toElement).find('.image').each(function(){
+                            var $image = $(this);
+                            var bounding = this.getBoundingClientRect();
+                            var midway = bounding.left + ((bounding.right - bounding.left) / 2);
+
+                            var distance = Math.abs(midway - imageCenterX);
+                            if (distance < closestImageDistance) {
+                                closestImageDistance = distance;
+                                $closestImage = $image;
+                            }
+                        });
+
+                        if ($closestImage) {
+                            $closestImage.addClass('dragged-over').append('<div class="drop-guide"></div>');
+                            determineDraggedOverLeftOrRight($closestImage.find('img').get(0), e);
+                        } else {
+                            $(e.toElement).addClass('dragged-over');
+                        }
+                    }
+                }
 
                 if (e.toElement && e.toElement.tagName && e.toElement.tagName.toLowerCase() === 'img' && e.toElement !== currentlyDraggingImage) {
                     $(e.toElement).parents('.image').addClass('dragged-over').append('<div class="drop-guide"></div>');
@@ -115,13 +150,31 @@
 
         var dropImage = function() {
             $('.drop-guide').remove();
-            $(currentlyDraggingImage).parents('.image').removeClass('currently-dragging').css({ top: 0, left: 0 });
+            var $image = $(currentlyDraggingImage).parents('.image');
+            $image.removeClass('currently-dragging').css({ top: 0, left: 0 });
+            if ($image.parents('.quilt-core').length && $image.parents('.quilt-core').find('.image').length > 1) {
+                $image.css({
+                    width: 'auto',
+                    height: parseInt($('input.scale-tool').val(), 10)
+                });
+            }
             $('body').removeClass('dragging-image');
             currentlyDraggingImage = undefined;
+            app.setupIndividualVerticalRagScales();
         };
 
         document.body.onmouseup = function(e) {
             $('body').removeClass('dragenter dragover');
+
+            var $draggedOverVerticalRag = $('.quilt-vertical-rag.dragged-over');
+
+            if ($draggedOverVerticalRag.length && !$draggedOverVerticalRag.find('.image').length) {
+                $draggedOverVerticalRag.removeClass('dragged-over');
+                $draggedOverVerticalRag.append($(currentlyDraggingImage).parents('.image'));
+
+                dropImage();
+                return;
+            }
 
             var $draggedOver = $('.image.dragged-over');
 
@@ -172,17 +225,34 @@
             $quiltScrollWrapper = $('<div class="quilt-scroll-wrapper"></div>'),
             $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
             $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0" alignment="central-axis"></div>'),
+            $quiltTop = $('<div class="quilt-vertical-rag quilt-top"></div>'),
+            $quiltCore = $('<div class="quilt-core"></div>'),
+            $quiltBottom = $('<div class="quilt-vertical-rag quilt-bottom"></div>'),
             $tools = $('<div class="tools"></div>'),
-            $imagesContainer = $('<div>'),
+            $temp = $('<div></div>'),
             $images,
+            $topImages,
+            $bottomImages,
             i
         ;
 
+        $temp.empty();
         for (i = 0; i < app.images.length; i++) {
-            $imagesContainer.append('<img draggable="false" data-id="' + app.images[i].id + '" src="' + app.images[i].url + '" />');
+            $temp.append('<img draggable="false" data-id="' + app.images[i].id + '" src="' + app.images[i].url + '" />');
         }
+        $images = $temp.find('img');
 
-        $images = $imagesContainer.find('img');
+        $temp.empty();
+        for (i = 0; i < app.topImages.length; i++) {
+            $temp.append('<img draggable="false" data-id="' + app.topImages[i].id + '" src="' + app.topImages[i].url + '" />');
+        }
+        $topImages = $temp.find('img');
+
+        $temp.empty();
+        for (i = 0; i < app.bottomImages.length; i++) {
+            $temp.append('<img draggable="false" data-id="' + app.bottomImages[i].id + '" src="' + app.bottomImages[i].url + '" />');
+        }
+        $bottomImages = $temp.find('img');
 
         $body[0].className = '';
         $body.empty().css('visibility', 'hidden').addClass('chrome-image-quilts');
@@ -203,19 +273,19 @@
             // Zoom
             .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')
             .append($('<a class="zoom-tool">100</a>').click(function(){ $(this).next().val(100).change(); }))
-            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').on('change input', function(e){ $quilt.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)'); }); }))
+            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)'); }); }))
             .append($('<a class="zoom-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Scale
             .append('<span class="label scale-tool">Row&nbsp;height&nbsp;in&nbsp;pixels</span>')
             .append($('<a class="scale-tool">30</a>').click(function(){ $(this).next().val(30).change(); }))
-            .append($('<input class="scale-tool" type="range" min="30" max="300" value="150">').on('change input', function(e){ $quilt.find('.image, .image img').each(function(){ $(this).css('height', e.target.value); }); }))
+            .append($('<input class="scale-tool" type="range" min="30" max="300" value="150">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).css('height', e.target.value); }); }))
             .append($('<a class="scale-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Order
             .append('<span class="label order-tool">Order</span>')
             .append($('<a class="order-tool">Original</a>').click(function(){
-                $images = $quilt.find('.image').toArray();
+                $images = $quiltCore.find('.image').toArray();
                 $images.sort(function(a, b){
                     a = parseInt($(a).attr('data-id'), 10);
                     b = parseInt($(b).attr('data-id'), 10);
@@ -223,11 +293,11 @@
                     if (a > b) return 1;
                     return 0;
                 });
-                $quilt.html($images);
+                $quiltCore.html($images);
                 app.setupIndividualZooms();
             }))
             .append($('<a class="order-tool">Shuffle</a>').click(function(){
-                $images = $quilt.find('.image').toArray();
+                $images = $quiltCore.find('.image').toArray();
                 $images.sort(function(a, b){
                     a = Math.random();
                     b = Math.random();
@@ -235,7 +305,7 @@
                     if (a > b) return 1;
                     return 0;
                 });
-                $quilt.html($images);
+                $quiltCore.html($images);
                 app.setupIndividualZooms();
             }))
             // Mode
@@ -251,7 +321,15 @@
         $body.append($quiltScrollWrapper);
         $quiltScrollWrapper.append($quiltWrapper);
         $quiltWrapper.append($quilt);
-        $quilt.append($images);
+
+        $quilt.append($quiltTop);
+        $quiltTop.append($topImages);
+
+        $quilt.append($quiltCore);
+        $quiltCore.append($images);
+
+        $quilt.append($quiltBottom);
+        $quiltBottom.append($bottomImages);
 
         $quilt.find('img').each(function(i){
             var $img = $(this);
@@ -268,6 +346,7 @@
         });
 
         app.setupIndividualZooms();
+        app.setupIndividualVerticalRagScales();
 
         $body.append('<div class="drag-helper"><div class="message">Add images...</div></div>');
 
@@ -280,6 +359,17 @@
                 $(e.target).parents('.image').find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)');
             })
         );
+    };
+
+    app.setupIndividualVerticalRagScales = function() {
+        $('.quilt-vertical-rag .image').each(function(){
+            var $image = $(this);
+            $image.resizable({
+                aspectRatio: $image.width() / $image.height(),
+                handles: 'ne, sw, se',
+                maxHeight: 300
+            });
+        });
     };
 
     app.saveExport = function() {
