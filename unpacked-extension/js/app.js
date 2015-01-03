@@ -42,6 +42,50 @@
         $('.image[data-id="' + id + '"]').remove();
     };
 
+    app.preserveAspectRatioAdjustSize = function($image, obj) {
+        obj = obj || {};
+
+        var aspectRatio = parseFloat($image.data('aspectRatio'));
+
+        if (aspectRatio && aspectRatio > 0) {
+            if (!obj || (!obj.width && !obj.height)) {
+                obj.width = $image.width();
+            }
+
+            if (obj.width) {
+                $image.css({
+                    width: obj.width,
+                    height: obj.width / aspectRatio
+                });
+
+                var zoom = parseFloat($image.data('zoom'));
+                if (zoom) {
+                    $image.find('img').css({
+                        width: obj.width * zoom,
+                        height: obj.width * zoom / aspectRatio
+                    });
+                }
+            }
+
+            if (obj.height) {
+                $image.css({
+                    width: aspectRatio * obj.height,
+                    height: obj.height
+                });
+
+                var zoom = parseFloat($image.data('zoom'));
+                if (zoom) {
+                    $image.find('img').css({
+                        width: aspectRatio * obj.height * zoom,
+                        height: obj.height * zoom
+                    });
+                }
+            }
+        } else {
+            console.error('Image missing aspect ratio');
+        }
+    };
+
     app.setupDragAndDropListener = function() {
         document.body.ondrop = function(e) {
             if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
@@ -132,7 +176,7 @@
                             }
                         });
 
-                        if ($closestImage) {
+                        if ($closestImage && !$closestImage.hasClass('currently-dragging')) {
                             $closestImage.addClass('dragged-over').append('<div class="drop-guide"></div>');
                             determineDraggedOverLeftOrRight($closestImage.find('img').get(0), e);
                         } else {
@@ -153,10 +197,7 @@
             var $image = $(currentlyDraggingImage).parents('.image');
             $image.removeClass('currently-dragging').css({ top: 0, left: 0 });
             if ($image.parents('.quilt-core').length && $image.parents('.quilt-core').find('.image').length > 1) {
-                $image.css({
-                    width: 'auto',
-                    height: parseInt($('input.scale-tool').val(), 10)
-                });
+                app.preserveAspectRatioAdjustSize($image, { height: parseInt($('input.scale-tool').val(), 10) });
             }
             $('body').removeClass('dragging-image');
             currentlyDraggingImage = undefined;
@@ -273,13 +314,13 @@
             // Zoom
             .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')
             .append($('<a class="zoom-tool">100</a>').click(function(){ $(this).next().val(100).change(); }))
-            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)'); }); }))
+            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).data('zoom', e.target.value / 100); app.preserveAspectRatioAdjustSize($(this)); }); }))
             .append($('<a class="zoom-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Scale
             .append('<span class="label scale-tool">Row&nbsp;height&nbsp;in&nbsp;pixels</span>')
             .append($('<a class="scale-tool">30</a>').click(function(){ $(this).next().val(30).change(); }))
-            .append($('<input class="scale-tool" type="range" min="30" max="300" value="150">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).css('height', e.target.value); }); }))
+            .append($('<input class="scale-tool" type="range" min="30" max="300" value="150">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ app.preserveAspectRatioAdjustSize($(this), { height: e.target.value }); }); }))
             .append($('<a class="scale-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Order
@@ -345,6 +386,18 @@
             app.removeImage(parseInt($(this).parent().attr('data-id'), 10));
         });
 
+        $quilt.find('img').each(function(){
+            this.onload = function() {
+                var aspectRatio = this.width / this.height;
+                $(this).data('aspectRatio', aspectRatio);
+                $(this).css('width', 150 * aspectRatio);
+                $(this).css('height', 150);
+                $(this).parents('.image').css('width', 150 * aspectRatio);
+                $(this).parents('.image').css('height', 150);
+                $(this).parents('.image').data('aspectRatio', aspectRatio).addClass('aspect-ratio-locked');
+            };
+        });
+
         app.setupIndividualZooms();
         app.setupIndividualVerticalRagScales();
 
@@ -356,7 +409,9 @@
     app.setupIndividualZooms = function() {
         $('.image .zoom').empty().append(
             $('<input type="range" min="100" max="300" value="120">').on('change input', function(e){
-                $(e.target).parents('.image').find('img').css('-webkit-transform', 'scale(' + (e.target.value / 100) + ') translateZ(0)');
+                var $image = $(e.target).parents('.image');
+                $image.data('zoom', e.target.value / 100);
+                app.preserveAspectRatioAdjustSize($image);
             })
         );
     };
@@ -367,7 +422,10 @@
             $image.resizable({
                 aspectRatio: $image.width() / $image.height(),
                 handles: 'ne, sw, se',
-                maxHeight: 300
+                maxHeight: 300,
+                resize: function() {
+                    app.preserveAspectRatioAdjustSize($image);
+                }
             });
         });
     };
