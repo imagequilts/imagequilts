@@ -690,3 +690,32 @@ body.dragover .drag-helper {
     text-align: center;
     width: 100%;
 }
+
+.documentation-box {
+    padding: 1em;
+    width: calc(40% + 200px);
+    max-width: 80%;
+    margin-left: 10%;
+    margin-top: 10px;
+    margin-bottom: 60px;
+    font-family: "Gill Sans", "latoregular", "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    line-height: 1.35em;
+    text-align: left;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+    color: #7b7b7b;
+    letter-spacing: .022em;
+    background: transparent;
+    border: 1px solid transparent;
+    resize: none
+}
+
+.documentation-box::-webkit-input-placeholder {
+    color: #353535
+}
+
+.documentation-box:hover, .documentation-box:focus {
+    border-color: #202020;
+    outline: none
+}

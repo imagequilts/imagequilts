@@ -45,7 +45,8 @@
     app.preserveAspectRatioAdjustSize = function($image, obj) {
         obj = obj || {};
 
-        var aspectRatio = parseFloat($image.data('aspectRatio'));
+        var aspectRatio = parseFloat($image.attr('data-aspect-ratio'));
+        var zoom = parseFloat($image.attr('data-zoom'));
 
         if (aspectRatio && aspectRatio > 0) {
             if (!obj || (!obj.width && !obj.height)) {
@@ -58,7 +59,6 @@
                     height: obj.width / aspectRatio
                 });
 
-                var zoom = parseFloat($image.data('zoom'));
                 if (zoom) {
                     $image.find('img').css({
                         width: obj.width * zoom,
@@ -73,7 +73,6 @@
                     height: obj.height
                 });
 
-                var zoom = parseFloat($image.data('zoom'));
                 if (zoom) {
                     $image.find('img').css({
                         width: aspectRatio * obj.height * zoom,
@@ -166,17 +165,20 @@
                         var closestImageDistance = 999999;
                         $(e.toElement).find('.image').each(function(){
                             var $image = $(this);
-                            var bounding = this.getBoundingClientRect();
-                            var midway = bounding.left + ((bounding.right - bounding.left) / 2);
 
-                            var distance = Math.abs(midway - imageCenterX);
-                            if (distance < closestImageDistance) {
-                                closestImageDistance = distance;
-                                $closestImage = $image;
+                            if (!$image.hasClass('currently-dragging')) {
+                                var bounding = this.getBoundingClientRect();
+                                var midway = bounding.left + ((bounding.right - bounding.left) / 2);
+
+                                var distance = Math.abs(midway - imageCenterX);
+                                if (distance < closestImageDistance) {
+                                    closestImageDistance = distance;
+                                    $closestImage = $image;
+                                }
                             }
                         });
 
-                        if ($closestImage && !$closestImage.hasClass('currently-dragging')) {
+                        if ($closestImage) {
                             $closestImage.addClass('dragged-over').append('<div class="drop-guide"></div>');
                             determineDraggedOverLeftOrRight($closestImage.find('img').get(0), e);
                         } else {
@@ -270,6 +272,7 @@
             $quiltCore = $('<div class="quilt-core"></div>'),
             $quiltBottom = $('<div class="quilt-vertical-rag quilt-bottom"></div>'),
             $tools = $('<div class="tools"></div>'),
+            $documentationBox = $('<textarea autocomplete="false" spellcheck="false" placeholder="Add documentation... (title, description, date, copyright)" class="documentation-box"></textarea>'),
             $temp = $('<div></div>'),
             $images,
             $topImages,
@@ -314,7 +317,7 @@
             // Zoom
             .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')
             .append($('<a class="zoom-tool">100</a>').click(function(){ $(this).next().val(100).change(); }))
-            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).data('zoom', e.target.value / 100); app.preserveAspectRatioAdjustSize($(this)); }); }))
+            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).attr('data-zoom', e.target.value / 100); app.preserveAspectRatioAdjustSize($(this)); }); }))
             .append($('<a class="zoom-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Scale
@@ -326,7 +329,7 @@
             // Order
             .append('<span class="label order-tool">Order</span>')
             .append($('<a class="order-tool">Original</a>').click(function(){
-                $images = $quiltCore.find('.image').toArray();
+                var $images = $quiltCore.find('.image').toArray();
                 $images.sort(function(a, b){
                     a = parseInt($(a).attr('data-id'), 10);
                     b = parseInt($(b).attr('data-id'), 10);
@@ -338,7 +341,7 @@
                 app.setupIndividualZooms();
             }))
             .append($('<a class="order-tool">Shuffle</a>').click(function(){
-                $images = $quiltCore.find('.image').toArray();
+                var $images = $quiltCore.find('.image').toArray();
                 $images.sort(function(a, b){
                     a = Math.random();
                     b = Math.random();
@@ -389,12 +392,12 @@
         $quilt.find('img').each(function(){
             this.onload = function() {
                 var aspectRatio = this.width / this.height;
-                $(this).data('aspectRatio', aspectRatio);
+                $(this).attr('data-aspect-ratio', aspectRatio);
                 $(this).css('width', 150 * aspectRatio);
                 $(this).css('height', 150);
                 $(this).parents('.image').css('width', 150 * aspectRatio);
                 $(this).parents('.image').css('height', 150);
-                $(this).parents('.image').data('aspectRatio', aspectRatio).addClass('aspect-ratio-locked');
+                $(this).parents('.image').attr('data-aspect-ratio', aspectRatio).addClass('aspect-ratio-locked');
             };
         });
 
@@ -403,6 +406,8 @@
 
         $body.append('<div class="drag-helper"><div class="message">Add images...</div></div>');
 
+        $quiltWrapper.append($documentationBox);
+
         $body.css('visibility', 'visible');
     };
 
@@ -410,7 +415,7 @@
         $('.image .zoom').empty().append(
             $('<input type="range" min="100" max="300" value="120">').on('change input', function(e){
                 var $image = $(e.target).parents('.image');
-                $image.data('zoom', e.target.value / 100);
+                $image.attr('data-zoom', e.target.value / 100);
                 app.preserveAspectRatioAdjustSize($image);
             })
         );
