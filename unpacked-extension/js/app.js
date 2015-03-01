@@ -56,27 +56,27 @@
             if (obj.width) {
                 $image.css({
                     width: obj.width,
-                    height: obj.width / aspectRatio
+                    height: parseInt(obj.width / aspectRatio, 10)
                 });
 
                 if (zoom) {
                     $image.find('img').css({
-                        width: obj.width * zoom,
-                        height: obj.width * zoom / aspectRatio
+                        width: Math.ceil(obj.width * zoom),
+                        height: Math.ceil(obj.width * zoom / aspectRatio)
                     });
                 }
             }
 
             if (obj.height) {
                 $image.css({
-                    width: aspectRatio * obj.height,
+                    width: parseInt(aspectRatio * obj.height, 10),
                     height: obj.height
                 });
 
                 if (zoom) {
                     $image.find('img').css({
-                        width: aspectRatio * obj.height * zoom,
-                        height: obj.height * zoom
+                        width: Math.ceil(aspectRatio * obj.height * zoom),
+                        height: Math.ceil(obj.height * zoom)
                     });
                 }
             }
@@ -257,6 +257,12 @@
         };
     };
 
+    app.quiltData = {};
+    app.quiltData.grayscale = 0;
+    app.quiltData.invert = 0;
+    app.quiltData.alignment = 'central-axis';
+    app.quiltData.showVerticalRagHelpers = false;
+
     app.makeQuilt = function() {
         if (!app.images.length) {
             $('body').removeClass('dragenter dragover');
@@ -267,7 +273,7 @@
         var $body = $('body'),
             $quiltScrollWrapper = $('<div class="quilt-scroll-wrapper"></div>'),
             $quiltWrapper = $('<div class="quilt-wrapper"></div>'),
-            $quilt = $('<div class="quilt" data-grayscale="0" data-invert="0" alignment="central-axis"></div>'),
+            $quilt = $('<div class="quilt" data-grayscale="' + app.quiltData.grayscale + '" data-invert="' + app.quiltData.invert + '" alignment="' + app.quiltData.alignment + '" ' + (app.quiltData.showVerticalRagHelpers ? 'show-vertical-rag-helpers' : '') + '></div>'),
             $quiltTop = $('<div class="quilt-vertical-rag quilt-top"></div>'),
             $quiltCore = $('<div class="quilt-core"></div>'),
             $quiltBottom = $('<div class="quilt-vertical-rag quilt-bottom"></div>'),
@@ -311,13 +317,14 @@
             )
 
             // Alignment
-            .append($('<a class="flush-left"><i>&nbsp;<b></b><b></b><b></b><b></b></i></a>').click(function(){ $quilt.attr('alignment', 'flush-left'); }))
-            .append($('<a class="central-axis"><i>&nbsp;<b></b><b></b><b></b><b></b></i></a>').click(function(){ $quilt.attr('alignment', 'central-axis'); }))
+            .append($('<a class="flush-left"><i>&nbsp;<b></b><b></b><b></b><b></b></i></a>').click(function(){ $quilt.attr('alignment', 'flush-left'); app.quiltData.alignment = 'flush-left'; }))
+            .append($('<a class="central-axis"><i>&nbsp;<b></b><b></b><b></b><b></b></i></a>').click(function(){ $quilt.attr('alignment', 'central-axis'); app.quiltData.alignment = 'central-axis'; }))
+            .append($('<a class="show-vertical-rag-helpers"><i>&nbsp;<b></b><b></b><b></b><b></b><b></b><b></b><b></b></i></a>').click(function(){ if ($quilt.attr('show-vertical-rag-helpers') !== undefined) { $quilt.removeAttr('show-vertical-rag-helpers'); app.quiltData.showVerticalRagHelpers = false; } else { $quilt.attr('show-vertical-rag-helpers', ''); app.quiltData.showVerticalRagHelpers = true; } }))
 
             // Zoom
             .append('<span class="label zoom-tool">Zoom&nbsp;percent</span>')
             .append($('<a class="zoom-tool">100</a>').click(function(){ $(this).next().val(100).change(); }))
-            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).attr('data-zoom', e.target.value / 100); app.preserveAspectRatioAdjustSize($(this)); }); }))
+            .append($('<input class="zoom-tool" type="range" min="100" max="300" value="100">').on('change input', function(e){ $quiltCore.find('.image').each(function(){ $(this).find('.zoom input').val(e.target.value); $(this).attr('data-zoom', e.target.value / 100); app.preserveAspectRatioAdjustSize($(this), { height: parseInt($('input.scale-tool').val(), 10) }); }); }))
             .append($('<a class="zoom-tool">300</a>').click(function(){ $(this).prev().val(300).change(); }))
 
             // Scale
@@ -352,11 +359,12 @@
                 $quiltCore.html($images);
                 app.setupIndividualZooms();
             }))
+
             // Mode
             .append('<span class="label color-mode-tool">Mode</span>')
-            .append($('<a class="color-mode-tool">Color</a>').click(function(){ $quilt.attr('data-grayscale', 0); }))
-            .append($('<a class="color-mode-tool">Greyscale</a>').click(function(){ $quilt.attr('data-grayscale', 1); }))
-            .append($('<a class="color-mode-tool">Inverted</a>').click(function(){ $quilt.attr('data-invert', parseInt($quilt.attr('data-invert'), 10) === 1 ? 0 : 1); }))
+            .append($('<a class="color-mode-tool">Color</a>').click(function(){ $quilt.attr('data-grayscale', 0); app.quiltData.grayscale = 0; }))
+            .append($('<a class="color-mode-tool">Greyscale</a>').click(function(){ $quilt.attr('data-grayscale', 1); app.quiltData.grayscale = 1; }))
+            .append($('<a class="color-mode-tool">Inverted</a>').click(function(){ $quilt.attr('data-invert', parseInt($quilt.attr('data-invert'), 10) === 1 ? 0 : 1); app.quiltData.invert = parseInt($quilt.attr('data-invert'), 10); }))
 
             // Export
             .append($('<a class="export">Download Quilt</a>').click(app.saveExport))
@@ -416,7 +424,7 @@
             $('<input type="range" min="100" max="300" value="120">').on('change input', function(e){
                 var $image = $(e.target).parents('.image');
                 $image.attr('data-zoom', e.target.value / 100);
-                app.preserveAspectRatioAdjustSize($image);
+                app.preserveAspectRatioAdjustSize($image, { height: parseInt($('input.scale-tool').val(), 10) });
             })
         );
     };
