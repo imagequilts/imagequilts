@@ -776,7 +776,7 @@ body.dragover .drag-helper {
     width: calc(40% + 200px);
     max-width: 80%;
     margin-left: 10%;
-    margin-top: 10px;
+    margin-top: -10px;
     margin-bottom: 60px;
     font-family: "Gill Sans", "latoregular", "Helvetica Neue", sans-serif;
     font-size: 18px;
