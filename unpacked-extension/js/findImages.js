@@ -13,7 +13,7 @@ function load() {
       }
       url = element.src;
     } else {
-      var match = element.style.backgroundImage.match(/^url\((http?\:\/\/.*)\)/);
+      var match = element.style.backgroundImage.match(/^url\((https?\:\/\/.*)\)/);
       if (match && match.length === 2) {
         url = match[1];
       }
